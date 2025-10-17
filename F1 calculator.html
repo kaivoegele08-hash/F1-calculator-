@@ -1,0 +1,2942 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Strategie Rechner 2025 - Ultimative Version</title>
+    <style>
+        :root {
+            --primary: #e10600;
+            --primary-dark: #c10500;
+            --secondary: #15151e;
+            --secondary-light: #2a2a3c;
+            --accent: #ffffff;
+            --accent-dim: #b0b0b0;
+            --background: #0f0f15;
+            --card-bg: #1e1e2d;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+            --online: #00ff88;
+            --reallife: #9c27b0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--accent);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary-light));
+            color: var(--accent);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            color: var(--accent-dim);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--online);
+            color: var(--secondary);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        .badge-reallife {
+            background: var(--reallife);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .mode-btn {
+            padding: 12px 24px;
+            background-color: var(--secondary-light);
+            color: var(--accent);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            max-width: 200px;
+        }
+        
+        .mode-btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .mode-btn.active {
+            background-color: var(--primary);
+            box-shadow: 0 4px 8px rgba(225, 6, 0, 0.3);
+        }
+        
+        .mode-btn.online {
+            background: linear-gradient(135deg, var(--online), #00cc6a);
+            color: var(--secondary);
+        }
+        
+        .mode-btn.online.active {
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.4);
+        }
+        
+        .mode-btn.reallife {
+            background: linear-gradient(135deg, var(--reallife), #7b1fa2);
+            color: var(--accent);
+        }
+        
+        .mode-btn.reallife.active {
+            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.4);
+        }
+        
+        .calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        @media (max-width: 968px) {
+            .calculator {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .input-section, .result-section {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+        
+        .advanced-options {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--secondary);
+            border-radius: 8px;
+            border-left: 4px solid var(--info);
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::before {
+            content: "▸";
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--accent-dim);
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--secondary);
+            color: var(--accent);
+            border: 1px solid var(--secondary-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(225, 6, 0, 0.2);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+        }
+        
+        .checkbox-group label {
+            margin-bottom: 0;
+        }
+        
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--accent);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(225, 6, 0, 0.3);
+        }
+        
+        .result-box {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--secondary);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .strategy-details {
+            margin-top: 15px;
+        }
+        
+        .advantage-note {
+            margin-top: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--secondary-light), var(--card-bg));
+            border-radius: 8px;
+            border-left: 4px solid var(--warning);
+        }
+        
+        .race-prediction {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--secondary);
+            border-radius: 10px;
+        }
+        
+        .prediction-phase {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--secondary-light);
+        }
+        
+        .prediction-phase:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .tire-visual {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            gap: 8px;
+        }
+        
+        .tire-segment {
+            text-align: center;
+            padding: 12px 8px;
+            border-radius: 8px;
+            flex: 1;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tire-segment::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .tire-segment:hover {
+            transform: translateY(-3px);
+        }
+        
+        .tire-soft {
+            background: linear-gradient(135deg, #ff3333, #cc0000);
+            color: white;
+        }
+        
+        .tire-medium {
+            background: linear-gradient(135deg, #ffcc00, #e6b800);
+            color: black;
+        }
+        
+        .tire-hard {
+            background: linear-gradient(135deg, #ffffff, #e6e6e6);
+            color: black;
+        }
+        
+        .tire-intermediate {
+            background: linear-gradient(135deg, #00cc66, #00994d);
+            color: white;
+        }
+        
+        .tire-wet {
+            background: linear-gradient(135deg, #0066cc, #004d99);
+            color: white;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .f1-logo {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+        
+        .phase-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--accent);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .phase-title::before {
+            content: "•";
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        
+        .phase-desc {
+            margin-left: 20px;
+            color: var(--accent-dim);
+        }
+        
+        .overtake-opportunity {
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .risk-note {
+            color: var(--danger);
+            font-weight: bold;
+        }
+        
+        .strategy-tip {
+            color: var(--warning);
+            font-weight: bold;
+        }
+        
+        .info-note {
+            color: var(--info);
+            font-weight: bold;
+        }
+        
+        .track-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding: 12px;
+            background-color: var(--secondary-light);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .track-info-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .track-info-value {
+            font-weight: bold;
+            color: var(--accent);
+            margin-top: 5px;
+        }
+        
+        .stint-list {
+            list-style-type: none;
+            margin: 15px 0;
+        }
+        
+        .stint-list li {
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            background-color: var(--secondary-light);
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stint-runden {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .race-length-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .red-flag-warning {
+            background: linear-gradient(135deg, #ff3333, #cc0000);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: flash 2s infinite;
+        }
+        
+        @keyframes flash {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .red-flag-warning::before {
+            content: "⚠";
+            font-size: 1.5rem;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--secondary-light);
+        }
+        
+        .comparison-table th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .comparison-table tr:hover {
+            background-color: var(--secondary-light);
+        }
+        
+        .strategy-comparison {
+            margin-top: 25px;
+        }
+        
+        .fuel-info {
+            margin-top: 15px;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--secondary-light), var(--card-bg));
+            border-radius: 8px;
+            border-left: 4px solid var(--info);
+        }
+        
+        .online-note {
+            margin-top: 15px;
+            padding: 12px;
+            background: linear-gradient(135deg, #00cc6a, #00a858);
+            color: var(--secondary);
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .reallife-note {
+            margin-top: 15px;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--reallife), #7b1fa2);
+            color: var(--accent);
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--secondary-light);
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            color: var(--accent-dim);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            color: var(--accent);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .simplified-advanced {
+            background: linear-gradient(135deg, var(--secondary-light), var(--card-bg));
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .simplified-advanced h4 {
+            margin-bottom: 15px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+        }
+        
+        .simplified-advanced h4::before {
+            content: "ℹ";
+            margin-right: 8px;
+            color: var(--info);
+        }
+        
+        .position-prediction {
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--secondary-light), var(--card-bg));
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .position-range {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+        
+        .position-probability {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        
+        .position-item {
+            text-align: center;
+            flex: 1;
+            padding: 8px;
+            background-color: var(--secondary);
+            margin: 0 3px;
+            border-radius: 5px;
+        }
+        
+        .position-high {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .position-medium {
+            background-color: var(--warning);
+            color: black;
+        }
+        
+        .position-low {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .overtaking-prediction {
+            margin: 15px 0;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--secondary-light), var(--card-bg));
+            border-radius: 8px;
+        }
+        
+        .pitstop-times {
+            margin: 15px 0;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--secondary-light), var(--card-bg));
+            border-radius: 8px;
+        }
+        
+        .weather-timeline {
+            margin: 15px 0;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--secondary-light), var(--card-bg));
+            border-radius: 8px;
+        }
+        
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--secondary-light);
+        }
+        
+        .timeline-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .reallife-driver {
+            margin-top: 15px;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--secondary-light), var(--card-bg));
+            border-radius: 8px;
+        }
+        
+        .driver-select {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .driver-info {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--accent-dim);
+        }
+        
+        .ai-adaptation {
+            margin: 15px 0;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--secondary-light), var(--card-bg));
+            border-radius: 8px;
+        }
+        
+        .ai-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .race-highlights {
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--secondary-light), var(--card-bg));
+            border-radius: 8px;
+        }
+        
+        .highlight-item {
+            display: flex;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--secondary-light);
+            align-items: flex-start;
+        }
+        
+        .highlight-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .highlight-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+            min-width: 30px;
+        }
+        
+        .highlight-content {
+            flex: 1;
+        }
+        
+        .highlight-title {
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: var(--accent);
+        }
+        
+        .highlight-desc {
+            color: var(--accent-dim);
+            font-size: 0.9rem;
+        }
+        
+        .exact-position {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .position-confidence {
+            text-align: center;
+            color: var(--accent-dim);
+            margin-bottom: 15px;
+        }
+        
+        .team-performance {
+            margin: 15px 0;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--secondary-light), var(--card-bg));
+            border-radius: 8px;
+        }
+        
+        .performance-bar {
+            height: 20px;
+            background-color: var(--secondary);
+            border-radius: 10px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+        
+        .performance-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .performance-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--accent-dim);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span class="f1-logo">🏎️</span> F1 Strategie Rechner 2025 - Ultimative Version</h1>
+            <p class="subtitle">Präzise Real-Life Vorhersagen mit Rennhöhepunkten <span class="badge">AKTUALISIERT 2025</span></p>
+        </header>
+        
+        <div class="mode-selector">
+            <button class="mode-btn active" data-mode="f1-manager">F1 Manager</button>
+            <button class="mode-btn" data-mode="f1-25">F1 25</button>
+            <button class="mode-btn online" data-mode="online">Online</button>
+            <button class="mode-btn reallife" data-mode="reallife">Real-Life <span class="badge badge-reallife">2025</span></button>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" data-tab="strategy">Hauptstrategie</button>
+            <button class="tab" data-tab="advanced">Erweiterte Einstellungen</button>
+            <button class="tab" data-tab="comparison">Strategievergleich</button>
+        </div>
+        
+        <div class="calculator">
+            <div class="input-section">
+                <div class="tab-content active" id="strategy-tab">
+                    <div class="section-title">Rennparameter</div>
+                    
+                    <div class="form-group">
+                        <label for="strecke">Strecke:</label>
+                        <select id="strecke">
+                            <!-- Strecken werden via JavaScript geladen -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="team">Team:</label>
+                        <select id="team">
+                            <!-- Teams werden via JavaScript geladen -->
+                        </select>
+                    </div>
+                    
+                    <div id="reallife-driver" class="reallife-driver hidden">
+                        <label for="driver">Fahrer:</label>
+                        <select id="driver">
+                            <!-- Fahrer werden via JavaScript geladen -->
+                        </select>
+                        <div class="driver-info" id="driver-info">
+                            <!-- Fahrerinfo wird hier eingefügt -->
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="renn-laenge">Rennlänge:</label>
+                            <select id="renn-laenge">
+                                <option value="kurz">Kurz (25% Distanz)</option>
+                                <option value="mittel35" selected>Mittel (35% Distanz)</option>
+                                <option value="mittel50">Standard (50% Distanz)</option>
+                                <option value="lang">Lang (100% Distanz)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="startposition">Startposition (1-20):</label>
+                            <input type="number" id="startposition" min="1" max="20" value="10">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="wetter">Wettervorhersage:</label>
+                            <select id="wetter">
+                                <option value="trocken">Trocken</option>
+                                <option value="wechselhaft">Wechselhaft (Regen möglich)</option>
+                                <option value="nass">Nass</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="strecken-temperatur">Streckentemperatur:</label>
+                            <select id="strecken-temperatur">
+                                <option value="kuehl">Kühl</option>
+                                <option value="normal" selected>Normal</option>
+                                <option value="heiss">Heiß</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sicherheitsauto-wahrscheinlichkeit">Sicherheitsauto-Wahrscheinlichkeit:</label>
+                        <select id="sicherheitsauto-wahrscheinlichkeit">
+                            <option value="niedrig">Niedrig</option>
+                            <option value="mittel" selected>Mittel</option>
+                            <option value="hoch">Hoch</option>
+                        </select>
+                    </div>
+                    
+                    <div id="fahrstil-option" class="form-group">
+                        <label for="fahrstil">Fahrstil:</label>
+                        <select id="fahrstil">
+                            <option value="konservativ">Konservativ</option>
+                            <option value="ausgeglichen" selected>Ausgeglichen</option>
+                            <option value="aggressiv">Aggressiv</option>
+                        </select>
+                    </div>
+                    
+                    <div id="f1-manager-options">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="rote-flagge">
+                            <label for="rote-flagge">Rote Flagge möglich</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="ersatzteile">
+                            <label for="ersatzteile">Begrenzte Ersatzteile</label>
+                        </div>
+                    </div>
+                    
+                    <button onclick="berechneStrategie()">Strategie berechnen</button>
+                </div>
+                
+                <div class="tab-content" id="advanced-tab">
+                    <div class="section-title">Erweiterte Einstellungen</div>
+                    
+                    <!-- Vereinfachte erweiterte Einstellungen für F1 25 und Online -->
+                    <div id="f1-25-advanced" class="simplified-advanced">
+                        <h4>F1 25 & Online Einstellungen</h4>
+                        <div class="form-group">
+                            <label for="regen-wahrscheinlichkeit">Regenwahrscheinlichkeit (%):</label>
+                            <input type="range" id="regen-wahrscheinlichkeit" min="0" max="100" value="20">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>0%</span>
+                                <span id="regen-value">20%</span>
+                                <span>100%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regen-start">Regenbeginn (Runde):</label>
+                            <input type="number" id="regen-start" min="1" max="100" value="20">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ai-schwierigkeit">KI-Schwierigkeit:</label>
+                            <select id="ai-schwierigkeit">
+                                <option value="leicht">Leicht</option>
+                                <option value="mittel" selected>Mittel</option>
+                                <option value="schwer">Schwer</option>
+                                <option value="experte">Experte</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Vollständige erweiterte Einstellungen für F1 Manager -->
+                    <div id="f1-manager-advanced" class="advanced-options hidden">
+                        <h4>F1 Manager Erweiterte Einstellungen</h4>
+                        <div class="form-group">
+                            <label for="regen-wahrscheinlichkeit-manager">Regenwahrscheinlichkeit (%):</label>
+                            <input type="range" id="regen-wahrscheinlichkeit-manager" min="0" max="100" value="20">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>0%</span>
+                                <span id="regen-value-manager">20%</span>
+                                <span>100%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regen-start-manager">Regenbeginn (Runde):</label>
+                            <input type="number" id="regen-start-manager" min="1" max="100" value="20">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regen-dauer">Regendauer (Runden):</label>
+                            <select id="regen-dauer">
+                                <option value="kurz">Kurz (5-10 Runden)</option>
+                                <option value="mittel" selected>Mittel (10-20 Runden)</option>
+                                <option value="lang">Lang (20+ Runden)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="fuel-load">Startkraftstoff (kg):</label>
+                            <input type="number" id="fuel-load" min="50" max="110" value="100">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="engine-mode">Motor-Modus:</label>
+                            <select id="engine-mode">
+                                <option value="konservativ">Konservativ</option>
+                                <option value="standard" selected>Standard</option>
+                                <option value="aggressiv">Aggressiv</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="erss-mode">ERS-Modus:</label>
+                            <select id="erss-mode">
+                                <option value="none">None (Offensive)</option>
+                                <option value="medium" selected>Medium (Balanced)</option>
+                                <option value="hotlap">Hotlap (Qualifying)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Real-Life erweiterte Einstellungen -->
+                    <div id="reallife-advanced" class="advanced-options hidden">
+                        <h4>Real-Life Erweiterte Einstellungen</h4>
+                        <div class="form-group">
+                            <label for="regen-wahrscheinlichkeit-reallife">Regenwahrscheinlichkeit (%):</label>
+                            <input type="range" id="regen-wahrscheinlichkeit-reallife" min="0" max="100" value="20">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>0%</span>
+                                <span id="regen-value-reallife">20%</span>
+                                <span>100%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regen-start-reallife">Regenbeginn (Runde):</label>
+                            <input type="number" id="regen-start-reallife" min="1" max="100" value="20">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regen-dauer-reallife">Regendauer (Runden):</label>
+                            <select id="regen-dauer-reallife">
+                                <option value="kurz">Kurz (5-10 Runden)</option>
+                                <option value="mittel" selected>Mittel (10-20 Runden)</option>
+                                <option value="lang">Lang (20+ Runden)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="safety-car-anzahl">Anzahl Safety Cars:</label>
+                            <select id="safety-car-anzahl">
+                                <option value="0">0 (Keine)</option>
+                                <option value="1" selected>1</option>
+                                <option value="2">2</option>
+                                <option value="3">3+</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="virtual-safety-car">Virtual Safety Car:</label>
+                            <select id="virtual-safety-car">
+                                <option value="nein">Nein</option>
+                                <option value="ja" selected>Ja (Wahrscheinlich)</option>
+                                <option value="sicher">Sicher (Mehrere)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button onclick="berechneStrategie()">Strategie berechnen</button>
+                </div>
+                
+                <div class="tab-content" id="comparison-tab">
+                    <div class="section-title">Strategievergleich</div>
+                    <p>Vergleiche verschiedene Strategien für dein Rennen:</p>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="compare-1stop" checked>
+                        <label for="compare-1stop">1-Stopp-Strategien vergleichen</label>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="compare-2stop" checked>
+                        <label for="compare-2stop">2-Stopp-Strategien vergleichen</label>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="compare-alternative">
+                        <label for="compare-alternative">Alternative Strategien</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="overtake-aggression">Überholaggressivität:</label>
+                        <select id="overtake-aggression">
+                            <option value="konservativ">Konservativ</option>
+                            <option value="balanced" selected>Ausgeglichen</option>
+                            <option value="aggressiv">Aggressiv</option>
+                        </select>
+                    </div>
+                    
+                    <button onclick="vergleicheStrategien()">Strategien vergleichen</button>
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <div class="section-title">Strategieempfehlung</div>
+                <div id="ergebnis" class="result-box">
+                    <p>Bitte fülle alle Felder aus und klicke auf "Strategie berechnen".</p>
+                </div>
+                
+                <div id="online-info" class="online-note hidden">
+                    <h3>💚 Online-Modus Aktiv</h3>
+                    <p>Alle Teams haben die gleiche Performance. Dein Erfolg hängt von deiner Strategie und Fahrfähigkeiten ab!</p>
+                </div>
+                
+                <div id="reallife-info" class="reallife-note hidden">
+                    <h3>🔮 Real-Life-Modus Aktiv</h3>
+                    <p>Strategien basieren auf realen Rennanalysen und aktuellen Team-Performances der Saison 2025.</p>
+                </div>
+                
+                <div id="position-prediction" class="position-prediction hidden">
+                    <h3>🏁 Voraussichtliche Endplatzierung</h3>
+                    <div class="exact-position" id="exact-position">P7</div>
+                    <div class="position-confidence" id="position-confidence">Hohe Wahrscheinlichkeit (78%)</div>
+                    
+                    <div class="position-probability">
+                        <div class="position-item position-high" id="pos-podium">P1-P3<br><small>15%</small></div>
+                        <div class="position-item position-medium" id="pos-points">P4-P10<br><small>60%</small></div>
+                        <div class="position-item position-low" id="pos-out">P11-P20<br><small>25%</small></div>
+                    </div>
+                </div>
+                
+                <div id="team-performance" class="team-performance hidden">
+                    <h3>📊 Team-Performance auf dieser Strecke</h3>
+                    <div class="performance-labels">
+                        <span>Schwach</span>
+                        <span>Stark</span>
+                    </div>
+                    <div class="performance-bar">
+                        <div class="performance-fill" id="team-performance-bar" style="width: 65%; background: var(--primary);"></div>
+                    </div>
+                    <p id="team-performance-text">Ihr Team liegt im oberen Mittelfeld auf dieser Strecke.</p>
+                </div>
+                
+                <div id="race-highlights" class="race-highlights hidden">
+                    <h3>🌟 Rennhöhepunkte 2025</h3>
+                    <div id="highlights-content">
+                        <!-- Höhepunkte werden hier eingefügt -->
+                    </div>
+                </div>
+                
+                <div id="overtaking-prediction" class="overtaking-prediction hidden">
+                    <h3>📈 Überholvorhersage</h3>
+                    <p id="overtaking-text">Mit dieser Strategie kannst du voraussichtlich <strong>3-5 Positionen</strong> gutmachen.</p>
+                    <p><strong>Beste Überholmöglichkeiten:</strong> Runde 12-15 (DRS-Zone) & Runde 28-32 (Frische Reifen)</p>
+                </div>
+                
+                <div id="pitstop-times" class="pitstop-times hidden">
+                    <h3>⏱️ Boxenstopp-Zeiten</h3>
+                    <p><strong>Erster Stopp:</strong> ~2.4s (Runde 18)</p>
+                    <p><strong>Zweiter Stopp:</strong> ~2.6s (Runde 42)</p>
+                    <p><strong>Gesamtverlust durch Boxenstopps:</strong> ~24 Sekunden</p>
+                </div>
+                
+                <div id="weather-timeline" class="weather-timeline hidden">
+                    <h3>🌤️ Wettervorhersage</h3>
+                    <div class="timeline-item">
+                        <span>Runde 1-15:</span>
+                        <span>Trocken, 25°C</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span>Runde 16-30:</span>
+                        <span>Leichter Regen, 22°C</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span>Runde 31-50:</span>
+                        <span>Wechselhaft, 24°C</span>
+                    </div>
+                </div>
+                
+                <div id="ai-adaptation" class="ai-adaptation hidden">
+                    <h3>🤖 KI-Adaptation</h3>
+                    <p>Die KI-Gegner werden voraussichtlich folgende Strategien fahren:</p>
+                    <div class="ai-item">
+                        <span>Top-Teams (McLaren, Mercedes):</span>
+                        <span>Ähnliche 1-Stopp-Strategie</span>
+                    </div>
+                    <div class="ai-item">
+                        <span>Mittelfeld (Ferrari, Red Bull):</span>
+                        <span>Aggressivere 2-Stopp-Strategie</span>
+                    </div>
+                    <div class="ai-item">
+                        <span>Hinterfeld (Alpine, Haas):</span>
+                        <span>Konservative 1-Stopp-Strategie</span>
+                    </div>
+                </div>
+                
+                <div id="rote-flagge-info" class="red-flag-warning hidden">
+                    <strong>Rote Flagge Vorhersage:</strong> <span id="rote-flagge-text"></span>
+                </div>
+                
+                <div id="fuel-info" class="fuel-info hidden">
+                    <h3>⛽ Kraftstoffmanagement</h3>
+                    <p id="fuel-text"></p>
+                </div>
+                
+                <div id="rennen-verlauf" class="race-prediction hidden">
+                    <h3>Voraussichtlicher Rennverlauf</h3>
+                    <div id="verlauf-content"></div>
+                </div>
+                
+                <div id="strategy-comparison" class="strategy-comparison hidden">
+                    <h3>Strategievergleich</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Strategie</th>
+                                <th>Stopps</th>
+                                <th>Gesamtzeit</th>
+                                <th>Risiko</th>
+                                <th>Vorteil</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparison-body">
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="vorteil-info" class="advantage-note hidden">
+                    <h3>Dein strategischer Vorteil</h3>
+                    <p id="vorteil-text"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datenbank mit allen Strecken und realistischen Eigenschaften für 2025
+        // Datenbank mit allen Strecken und realistischen Eigenschaften für 2025
+const streckenDaten = {
+    "australien": { 
+        name: "Albert Park Circuit", 
+        runden: 58, 
+        reifenAbnutzung: "mittel", 
+        ueberholen: "mittel", 
+        typ: "halbstadt",
+        beschreibung: "Ausgewogene Strecke mit mittlerer Reifenabnutzung",
+        kraftstoffVerbrauch: "mittel",
+        motorschaden: "niedrig",
+        pitstopZeit: 2.2,
+        teamPerformance: {
+            "mclaren": 0.95, "mercedes": 0.90, "ferrari": 0.85, "red-bull": 0.80,
+            "williams": 0.75, "racing-bulls": 0.70, "aston-martin": 0.68,
+            "sauber": 0.65, "haas": 0.60, "alpine": 0.55
+        }
+    },
+    "china": { 
+        name: "Shanghai International Circuit", 
+        runden: 56, 
+        reifenAbnutzung: "hoch", 
+        ueberholen: "einfach", 
+        typ: "standart",
+        beschreibung: "Hohe Reifenabnutzung durch abrasive Streckenoberfläche",
+        kraftstoffVerbrauch: "hoch",
+        motorschaden: "mittel",
+        pitstopZeit: 2.3,
+        teamPerformance: {
+            "mclaren": 0.94, "mercedes": 0.89, "ferrari": 0.84, "red-bull": 0.79,
+            "williams": 0.74, "racing-bulls": 0.69, "aston-martin": 0.67,
+            "sauber": 0.64, "haas": 0.59, "alpine": 0.54
+        }
+    },
+    "japan": { 
+        name: "Suzuka International Racing Course", 
+        runden: 53, 
+        reifenAbnutzung: "hoch", 
+        ueberholen: "mittel", 
+        typ: "standart",
+        beschreibung: "Anspruchsvolle Strecke mit hoher Reifenbelastung",
+        kraftstoffVerbrauch: "mittel",
+        motorschaden: "mittel",
+        pitstopZeit: 2.3,
+        teamPerformance: {
+            "mclaren": 0.93, "mercedes": 0.88, "ferrari": 0.83, "red-bull": 0.78,
+            "williams": 0.73, "racing-bulls": 0.68, "aston-martin": 0.66,
+            "sauber": 0.63, "haas": 0.58, "alpine": 0.53
+        }
+    },
+    "bahrain": { 
+        name: "Bahrain International Circuit", 
+        runden: 57, 
+        reifenAbnutzung: "mittel", 
+        ueberholen: "einfach", 
+        typ: "standart",
+        beschreibung: "Nachtrennen mit gutten Überholmöglichkeiten",
+        kraftstoffVerbrauch: "mittel",
+        motorschaden: "niedrig",
+        pitstopZeit: 2.2,
+        teamPerformance: {
+            "mclaren": 0.92, "mercedes": 0.87, "ferrari": 0.82, "red-bull": 0.77,
+            "williams": 0.72, "racing-bulls": 0.67, "aston-martin": 0.65,
+            "sauber": 0.62, "haas": 0.57, "alpine": 0.52
+        }
+    },
+    "saudi-arabien": { 
+        name: "Jeddah Corniche Circuit", 
+        runden: 50, 
+        reifenAbnutzung: "niedrig", 
+        ueberholen: "einfach", 
+        typ: "stadt",
+        beschreibung: "Schnellste Straßenstrecke der Welt",
+        kraftstoffVerbrauch: "hoch",
+        motorschaden: "hoch",
+        pitstopZeit: 2.4,
+        teamPerformance: {
+            "mclaren": 0.91, "mercedes": 0.86, "ferrari": 0.81, "red-bull": 0.76,
+            "williams": 0.71, "racing-bulls": 0.66, "aston-martin": 0.64,
+            "sauber": 0.61, "haas": 0.56, "alpine": 0.51
+        }
+    },
+    "miami": { 
+        name: "Miami International Autodrome", 
+        runden: 57, 
+        reifenAbnutzung: "mittel", 
+        ueberholen: "mittel", 
+        typ: "stadt",
+        beschreibung: "Strecke mit mittlerer Abnutzung und einigen Überholmöglichkeiten",
+        kraftstoffVerbrauch: "mittel",
+        motorschaden: "niedrig",
+        pitstopZeit: 2.3,
+        teamPerformance: {
+            "mclaren": 0.93, "mercedes": 0.88, "ferrari": 0.83, "red-bull": 0.78,
+            "williams": 0.73, "racing-bulls": 0.68, "aston-martin": 0.66,
+            "sauber": 0.63, "haas": 0.58, "alpine": 0.53
+        }
+    },
+    "imola": { 
+        name: "Imola Circuit", 
+        runden: 63, 
+        reifenAbnutzung: "hoch", 
+        ueberholen: "schwierig", 
+        typ: "standart",
+        beschreibung: "Traditionelle Strecke mit wenigen Überholmöglichkeiten",
+        kraftstoffVerbrauch: "mittel",
+        motorschaden: "mittel",
+        pitstopZeit: 2.3,
+        teamPerformance: {
+            "mclaren": 0.90, "mercedes": 0.85, "ferrari": 0.80, "red-bull": 0.75,
+            "williams": 0.70, "racing-bulls": 0.65, "aston-martin": 0.63,
+            "sauber": 0.60, "haas": 0.55, "alpine": 0.50
+        }
+    },
+    "monaco": { 
+        name: "Circuit de Monaco", 
+        runden: 78, 
+        reifenAbnutzung: "niedrig", 
+        ueberholen: "sehr schwierig", 
+        typ: "stadt",
+        beschreibung: "Niedrigste Reifenabnutzung, aber kaum Überholmöglichkeiten",
+        kraftstoffVerbrauch: "niedrig",
+        motorschaden: "niedrig",
+        pitstopZeit: 2.1,
+        teamPerformance: {
+            "mclaren": 0.91, "mercedes": 0.86, "ferrari": 0.81, "red-bull": 0.76,
+            "williams": 0.71, "racing-bulls": 0.66, "aston-martin": 0.64,
+            "sauber": 0.61, "haas": 0.56, "alpine": 0.51
+        }
+    },
+    "spanien": { 
+        name: "Circuit de Barcelona-Catalunya", 
+        runden: 66, 
+        reifenAbnutzung: "hoch", 
+        ueberholen: "mittel", 
+        typ: "standart",
+        beschreibung: "Hohe Reifenbelastung durch lange schnelle Kurven",
+        kraftstoffVerbrauch: "mittel",
+        motorschaden: "mittel",
+        pitstopZeit: 2.3,
+        teamPerformance: {
+            "mclaren": 0.94, "mercedes": 0.90, "ferrari": 0.86, "red-bull": 0.81,
+            "williams": 0.76, "racing-bulls": 0.71, "aston-martin": 0.69,
+            "sauber": 0.66, "haas": 0.61, "alpine": 0.56
+        }
+    },
+    "kanada": { 
+        name: "Circuit Gilles Villeneuve", 
+        runden: 70, 
+        reifenAbnutzung: "niedrig", 
+        ueberholen: "einfach", 
+        typ: "halbstadt",
+        beschreibung: "Niedrige Reifenabnutzung, gute Überholmöglichkeiten",
+        kraftstoffVerbrauch: "hoch",
+        motorschaden: "mittel",
+        pitstopZeit: 2.4,
+        teamPerformance: {
+            "mclaren": 0.92, "mercedes": 0.87, "ferrari": 0.82, "red-bull": 0.77,
+            "williams": 0.72, "racing-bulls": 0.67, "aston-martin": 0.65,
+            "sauber": 0.62, "haas": 0.57, "alpine": 0.52
+        }
+    },
+    "oesterreich": { 
+        name: "Red Bull Ring", 
+        runden: 71, 
+        reifenAbnutzung: "mittel", 
+        ueberholen: "einfach", 
+        typ: "standart",
+        beschreibung: "Kurze Strecke mit mehreren DRS-Zonen",
+        kraftstoffVerbrauch: "mittel",
+        motorschaden: "niedrig",
+        pitstopZeit: 2.2,
+        teamPerformance: {
+            "mclaren": 0.97, "mercedes": 0.92, "ferrari": 0.87, "red-bull": 0.82,
+            "williams": 0.77, "racing-bulls": 0.72, "aston-martin": 0.70,
+            "sauber": 0.67, "haas": 0.62, "alpine": 0.57
+        }
+    },
+    "grossbritannien": { 
+        name: "Silverstone Circuit", 
+        runden: 52, 
+        reifenAbnutzung: "hoch", 
+        ueberholen: "einfach", 
+        typ: "standart",
+        beschreibung: "Sehr hohe Reifenbelastung in den schnellen Kurven",
+        kraftstoffVerbrauch: "hoch",
+        motorschaden: "mittel",
+        pitstopZeit: 2.4,
+        teamPerformance: {
+            "mclaren": 0.96, "mercedes": 0.91, "ferrari": 0.86, "red-bull": 0.81,
+            "williams": 0.76, "racing-bulls": 0.71, "aston-martin": 0.69,
+            "sauber": 0.66, "haas": 0.61, "alpine": 0.56
+        }
+    },
+    "belgien": { 
+        name: "Circuit de Spa-Francorchamps", 
+        runden: 44, 
+        reifenAbnutzung: "mittel", 
+        ueberholen: "einfach", 
+        typ: "standart",
+        beschreibung: "Lange Strecke mit verschiedenen Kurventypen",
+        kraftstoffVerbrauch: "sehr hoch",
+        motorschaden: "hoch",
+        pitstopZeit: 2.5,
+        teamPerformance: {
+            "mclaren": 0.95, "mercedes": 0.90, "ferrari": 0.85, "red-bull": 0.80,
+            "williams": 0.75, "racing-bulls": 0.70, "aston-martin": 0.68,
+            "sauber": 0.65, "haas": 0.60, "alpine": 0.55
+        }
+    },
+    "ungarn": { 
+        name: "Hungaroring", 
+        runden: 70, 
+        reifenAbnutzung: "hoch", 
+        ueberholen: "schwierig", 
+        typ: "standart",
+        beschreibung: "Eng und kurvenreich mit wenigen Überholmöglichkeiten",
+        kraftstoffVerbrauch: "mittel",
+        motorschaden: "niedrig",
+        pitstopZeit: 2.3,
+        teamPerformance: {
+            "mclaren": 0.89, "mercedes": 0.84, "ferrari": 0.79, "red-bull": 0.74,
+            "williams": 0.69, "racing-bulls": 0.64, "aston-martin": 0.62,
+            "sauber": 0.59, "haas": 0.54, "alpine": 0.49
+        }
+    },
+    "niederlande": { 
+        name: "Circuit Zandvoort", 
+        runden: 72, 
+        reifenAbnutzung: "mittel", 
+        ueberholen: "schwierig", 
+        typ: "standart",
+        beschreibung: "Strecke mit hohen Banking-Kurven",
+        kraftstoffVerbrauch: "mittel",
+        motorschaden: "mittel",
+        pitstopZeit: 2.3,
+        teamPerformance: {
+            "mclaren": 0.88, "mercedes": 0.83, "ferrari": 0.78, "red-bull": 0.73,
+            "williams": 0.68, "racing-bulls": 0.63, "aston-martin": 0.61,
+            "sauber": 0.58, "haas": 0.53, "alpine": 0.48
+        }
+    },
+    "italien": { 
+        name: "Monza Circuit", 
+        runden: 53, 
+        reifenAbnutzung: "niedrig", 
+        ueberholen: "einfach", 
+        typ: "standart",
+        beschreibung: "Temple of Speed - niedrigste Reifenabnutzung",
+        kraftstoffVerbrauch: "sehr hoch",
+        motorschaden: "hoch",
+        pitstopZeit: 2.3,
+        teamPerformance: {
+            "mclaren": 0.92, "mercedes": 0.87, "ferrari": 0.82, "red-bull": 0.77,
+            "williams": 0.72, "racing-bulls": 0.67, "aston-martin": 0.65,
+            "sauber": 0.62, "haas": 0.57, "alpine": 0.52
+        }
+    },
+    "aserbaidschan": { 
+        name: "Baku City Circuit", 
+        runden: 51, 
+        reifenAbnutzung: "niedrig", 
+        ueberholen: "einfach", 
+        typ: "stadt",
+        beschreibung: "Lange Geraden und enge Straßen",
+        kraftstoffVerbrauch: "mittel",
+        motorschaden: "hoch",
+        pitstopZeit: 2.4,
+        teamPerformance: {
+            "mclaren": 0.87, "mercedes": 0.82, "ferrari": 0.77, "red-bull": 0.72,
+            "williams": 0.67, "racing-bulls": 0.62, "aston-martin": 0.60,
+            "sauber": 0.57, "haas": 0.52, "alpine": 0.47
+        }
+    },
+    "singapur": { 
+        name: "Marina Bay Street Circuit", 
+        runden: 61, 
+        reifenAbnutzung: "hoch", 
+        ueberholen: "schwierig", 
+        typ: "stadt",
+        beschreibung: "Hohe Luftfeuchtigkeit führt zu hoher Reifenabnutzung",
+        kraftstoffVerbrauch: "hoch",
+        motorschaden: "mittel",
+        pitstopZeit: 2.6,
+        teamPerformance: {
+            "mclaren": 0.90, "mercedes": 0.85, "ferrari": 0.80, "red-bull": 0.75,
+            "williams": 0.70, "racing-bulls": 0.65, "aston-martin": 0.63,
+            "sauber": 0.60, "haas": 0.55, "alpine": 0.50
+        }
+    },
+    "usa": { 
+        name: "Circuit of the Americas", 
+        runden: 56, 
+        reifenAbnutzung: "mittel", 
+        ueberholen: "mittel", 
+        typ: "standart",
+        beschreibung: "Abwechslungsreiche Strecke mit mittlerer Reifenabnutzung",
+        kraftstoffVerbrauch: "mittel",
+        motorschaden: "niedrig",
+        pitstopZeit: 2.4,
+        teamPerformance: {
+            "mclaren": 0.93, "mercedes": 0.88, "ferrari": 0.83, "red-bull": 0.78,
+            "williams": 0.73, "racing-bulls": 0.68, "aston-martin": 0.66,
+            "sauber": 0.63, "haas": 0.58, "alpine": 0.53
+        }
+    },
+    "mexiko": { 
+        name: "Autódromo Hermanos Rodríguez", 
+        runden: 71, 
+        reifenAbnutzung: "niedrig", 
+        ueberholen: "mittel", 
+        typ: "standart",
+        beschreibung: "Höhenlage reduziert Reifenabnutzung",
+        kraftstoffVerbrauch: "niedrig",
+        motorschaden: "niedrig",
+        pitstopZeit: 2.3,
+        teamPerformance: {
+            "mclaren": 0.96, "mercedes": 0.91, "ferrari": 0.86, "red-bull": 0.81,
+            "williams": 0.76, "racing-bulls": 0.71, "aston-martin": 0.69,
+            "sauber": 0.66, "haas": 0.61, "alpine": 0.56
+        }
+    },
+    "brasilien": { 
+        name: "Interlagos Circuit", 
+        runden: 71, 
+        reifenAbnutzung: "mittel", 
+        ueberholen: "einfach", 
+        typ: "standart",
+        beschreibung: "Ausgewogene Strecke mit guten Überholmöglichkeiten",
+        kraftstoffVerbrauch: "mittel",
+        motorschaden: "niedrig",
+        pitstopZeit: 2.3,
+        teamPerformance: {
+            "mclaren": 0.94, "mercedes": 0.89, "ferrari": 0.84, "red-bull": 0.79,
+            "williams": 0.74, "racing-bulls": 0.69, "aston-martin": 0.67,
+            "sauber": 0.64, "haas": 0.59, "alpine": 0.54
+        }
+    },
+    "las-vegas": { 
+        name: "Las Vegas Street Circuit", 
+        runden: 50, 
+        reifenAbnutzung: "niedrig", 
+        ueberholen: "mittel", 
+        typ: "stadt",
+        beschreibung: "Nachtrennen mit kühlen Temperaturen und niedriger Reifenabnutzung",
+        kraftstoffVerbrauch: "mittel",
+        motorschaden: "mittel",
+        pitstopZeit: 2.4,
+        teamPerformance: {
+            "mclaren": 0.92, "mercedes": 0.87, "ferrari": 0.82, "red-bull": 0.77,
+            "williams": 0.72, "racing-bulls": 0.67, "aston-martin": 0.65,
+            "sauber": 0.62, "haas": 0.57, "alpine": 0.52
+        }
+    },
+    "katar": { 
+        name: "Lusail International Circuit", 
+        runden: 57, 
+        reifenAbnutzung: "hoch", 
+        ueberholen: "einfach", 
+        typ: "standart",
+        beschreibung: "Hohe Temperaturen führen zu erhöhter Reifenabnutzung",
+        kraftstoffVerbrauch: "hoch",
+        motorschaden: "mittel",
+        pitstopZeit: 2.3,
+        teamPerformance: {
+            "mclaren": 0.95, "mercedes": 0.90, "ferrari": 0.85, "red-bull": 0.80,
+            "williams": 0.75, "racing-bulls": 0.70, "aston-martin": 0.68,
+            "sauber": 0.65, "haas": 0.60, "alpine": 0.55
+        }
+    },
+    "abu-dhabi": { 
+        name: "Yas Marina Circuit", 
+        runden: 58, 
+        reifenAbnutzung: "niedrig", 
+        ueberholen: "mittel", 
+        typ: "standart",
+        beschreibung: "Moderne Strecke mit niedriger Reifenabnutzung",
+        kraftstoffVerbrauch: "mittel",
+        motorschaden: "niedrig",
+        pitstopZeit: 2.2,
+        teamPerformance: {
+            "mclaren": 0.93, "mercedes": 0.88, "ferrari": 0.83, "red-bull": 0.78,
+            "williams": 0.73, "racing-bulls": 0.68, "aston-martin": 0.66,
+            "sauber": 0.63, "haas": 0.58, "alpine": 0.53
+        }
+    }
+};
+        // Datenbank mit allen Teams für 2025
+        const teamDaten = {
+            "mclaren": { name: "McLaren", reifenPerformance: 0.95, pace: 1.0, motoreffizienz: 1.05, realLifePace: 1.0 },
+            "mercedes": { name: "Mercedes-AMG Petronas", reifenPerformance: 1.0, pace: 0.98, motoreffizienz: 1.0, realLifePace: 0.98 },
+            "ferrari": { name: "Ferrari", reifenPerformance: 1.05, pace: 0.97, motoreffizienz: 0.98, realLifePace: 0.97 },
+            "red-bull": { name: "Red Bull Racing", reifenPerformance: 0.98, pace: 0.99, motoreffizienz: 1.02, realLifePace: 0.99 },
+            "williams": { name: "Williams", reifenPerformance: 1.1, pace: 0.92, motoreffizienz: 0.95, realLifePace: 0.92 },
+            "racing-bulls": { name: "Racing Bulls", reifenPerformance: 1.02, pace: 0.96, motoreffizienz: 0.97, realLifePace: 0.96 },
+            "aston-martin": { name: "Aston Martin", reifenPerformance: 1.08, pace: 0.90, motoreffizienz: 1.0, realLifePace: 0.90 },
+            "sauber": { name: "Stake F1 Team Kick Sauber", reifenPerformance: 1.06, pace: 0.93, motoreffizienz: 0.99, realLifePace: 0.93 },
+            "haas": { name: "Haas F1 Team", reifenPerformance: 1.07, pace: 0.91, motoreffizienz: 0.96, realLifePace: 0.91 },
+            "alpine": { name: "Alpine", reifenPerformance: 1.09, pace: 0.89, motoreffizienz: 0.94, realLifePace: 0.89 }
+        };
+
+        // Online-Modus: Alle Teams haben gleiche Performance
+        const onlineTeamDaten = {
+            "mclaren": { name: "McLaren", reifenPerformance: 1.0, pace: 1.0, motoreffizienz: 1.0, realLifePace: 1.0 },
+            "mercedes": { name: "Mercedes-AMG Petronas", reifenPerformance: 1.0, pace: 1.0, motoreffizienz: 1.0, realLifePace: 1.0 },
+            "ferrari": { name: "Ferrari", reifenPerformance: 1.0, pace: 1.0, motoreffizienz: 1.0, realLifePace: 1.0 },
+            "red-bull": { name: "Red Bull Racing", reifenPerformance: 1.0, pace: 1.0, motoreffizienz: 1.0, realLifePace: 1.0 },
+            "williams": { name: "Williams", reifenPerformance: 1.0, pace: 1.0, motoreffizienz: 1.0, realLifePace: 1.0 },
+            "racing-bulls": { name: "Racing Bulls", reifenPerformance: 1.0, pace: 1.0, motoreffizienz: 1.0, realLifePace: 1.0 },
+            "aston-martin": { name: "Aston Martin", reifenPerformance: 1.0, pace: 1.0, motoreffizienz: 1.0, realLifePace: 1.0 },
+            "sauber": { name: "Stake F1 Team Kick Sauber", reifenPerformance: 1.0, pace: 1.0, motoreffizienz: 1.0, realLifePace: 1.0 },
+            "haas": { name: "Haas F1 Team", reifenPerformance: 1.0, pace: 1.0, motoreffizienz: 1.0, realLifePace: 1.0 },
+            "alpine": { name: "Alpine", reifenPerformance: 1.0, pace: 1.0, motoreffizienz: 1.0, realLifePace: 1.0 }
+        };
+
+        // Real-Life Fahrerdaten für 2025
+        const fahrerDaten = {
+            "norris": { 
+                name: "Lando Norris", 
+                team: "mclaren", 
+                aggression: 0.8, 
+                consistency: 0.9, 
+                wetSkill: 0.85, 
+                overtaking: 0.85,
+                qualifying: 0.89,
+                racecraft: 0.90
+            },
+            "piastri": { 
+                name: "Oscar Piastri", 
+                team: "mclaren", 
+                aggression: 0.7, 
+                consistency: 0.85, 
+                wetSkill: 0.75, 
+                overtaking: 0.8,
+                qualifying: 0.84,
+                racecraft: 0.82
+            },
+            "russell": { 
+                name: "George Russell", 
+                team: "mercedes", 
+                aggression: 0.8, 
+                consistency: 0.85, 
+                wetSkill: 0.8, 
+                overtaking: 0.85,
+                qualifying: 0.88,
+                racecraft: 0.86
+            },
+            "antonelli": { 
+                name: "Andrea Kimi Antonelli", 
+                team: "mercedes", 
+                aggression: 0.7, 
+                consistency: 0.8, 
+                wetSkill: 0.7, 
+                overtaking: 0.7,
+                qualifying: 0.75,
+                racecraft: 0.72
+            },
+            "leclerc": { 
+                name: "Charles Leclerc", 
+                team: "ferrari", 
+                aggression: 0.85, 
+                consistency: 0.8, 
+                wetSkill: 0.85, 
+                overtaking: 0.9,
+                qualifying: 0.95,
+                racecraft: 0.88
+            },
+            "hamilton": { 
+                name: "Lewis Hamilton", 
+                team: "ferrari", 
+                aggression: 0.8, 
+                consistency: 0.95, 
+                wetSkill: 0.95, 
+                overtaking: 0.9,
+                qualifying: 0.96,
+                racecraft: 0.98
+            },
+            "verstappen": { 
+                name: "Max Verstappen", 
+                team: "red-bull", 
+                aggression: 0.9, 
+                consistency: 0.95, 
+                wetSkill: 0.9, 
+                overtaking: 0.95,
+                qualifying: 0.98,
+                racecraft: 0.97
+            },
+            "tsunoda": { 
+                name: "Yuki Tsunoda", 
+                team: "red-bull", 
+                aggression: 0.8, 
+                consistency: 0.7, 
+                wetSkill: 0.75, 
+                overtaking: 0.8,
+                qualifying: 0.79,
+                racecraft: 0.77
+            },
+            "albon": { 
+                name: "Alexander Albon", 
+                team: "williams", 
+                aggression: 0.7, 
+                consistency: 0.85, 
+                wetSkill: 0.8, 
+                overtaking: 0.8,
+                qualifying: 0.82,
+                racecraft: 0.83
+            },
+            "sainz": { 
+                name: "Carlos Sainz", 
+                team: "williams", 
+                aggression: 0.75, 
+                consistency: 0.9, 
+                wetSkill: 0.8, 
+                overtaking: 0.8,
+                qualifying: 0.85,
+                racecraft: 0.87
+            },
+            "lawson": { 
+                name: "Liam Lawson", 
+                team: "racing-bulls", 
+                aggression: 0.7, 
+                consistency: 0.8, 
+                wetSkill: 0.75, 
+                overtaking: 0.75,
+                qualifying: 0.78,
+                racecraft: 0.79
+            },
+            "hadjar": { 
+                name: "Isack Hadjar", 
+                team: "racing-bulls", 
+                aggression: 0.8, 
+                consistency: 0.7, 
+                wetSkill: 0.7, 
+                overtaking: 0.8,
+                qualifying: 0.76,
+                racecraft: 0.75
+            },
+            "alonso": { 
+                name: "Fernando Alonso", 
+                team: "aston-martin", 
+                aggression: 0.85, 
+                consistency: 0.95, 
+                wetSkill: 0.9, 
+                overtaking: 0.9,
+                qualifying: 0.90,
+                racecraft: 0.96
+            },
+            "stroll": { 
+                name: "Lance Stroll", 
+                team: "aston-martin", 
+                aggression: 0.7, 
+                consistency: 0.7, 
+                wetSkill: 0.7, 
+                overtaking: 0.7,
+                qualifying: 0.72,
+                racecraft: 0.71
+            },
+            "hulkenberg": { 
+                name: "Nico Hülkenberg", 
+                team: "sauber", 
+                aggression: 0.7, 
+                consistency: 0.8, 
+                wetSkill: 0.8, 
+                overtaking: 0.75,
+                qualifying: 0.83,
+                racecraft: 0.78
+            },
+            "bortoleto": { 
+                name: "Gabriel Bortoleto", 
+                team: "sauber", 
+                aggression: 0.6, 
+                consistency: 0.75, 
+                wetSkill: 0.7, 
+                overtaking: 0.7,
+                qualifying: 0.74,
+                racecraft: 0.73
+            },
+            "ocon": { 
+                name: "Esteban Ocon", 
+                team: "haas", 
+                aggression: 0.75, 
+                consistency: 0.85, 
+                wetSkill: 0.75, 
+                overtaking: 0.75,
+                qualifying: 0.80,
+                racecraft: 0.79
+            },
+            "bearman": { 
+                name: "Oliver Bearman", 
+                team: "haas", 
+                aggression: 0.8, 
+                consistency: 0.7, 
+                wetSkill: 0.7, 
+                overtaking: 0.8,
+                qualifying: 0.75,
+                racecraft: 0.76
+            },
+            "gasly": { 
+                name: "Pierre Gasly", 
+                team: "alpine", 
+                aggression: 0.8, 
+                consistency: 0.8, 
+                wetSkill: 0.8, 
+                overtaking: 0.8,
+                qualifying: 0.83,
+                racecraft: 0.81
+            },
+            "colapinto": { 
+                name: "Franco Colapinto", 
+                team: "alpine", 
+                aggression: 0.7, 
+                consistency: 0.7, 
+                wetSkill: 0.65, 
+                overtaking: 0.7,
+                qualifying: 0.72,
+                racecraft: 0.71
+            }
+        };
+
+        // Tab-Funktionalität
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                this.classList.add('active');
+                const tabId = this.getAttribute('data-tab') + '-tab';
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Modus-Buttons Funktionalität
+        document.querySelectorAll('.mode-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.mode-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                const mode = this.getAttribute('data-mode');
+                
+                // Modus-spezifische Einstellungen anzeigen/verstecken
+                const onlineInfo = document.getElementById('online-info');
+                const reallifeInfo = document.getElementById('reallife-info');
+                const f1ManagerOptions = document.getElementById('f1-manager-options');
+                const f1ManagerAdvanced = document.getElementById('f1-manager-advanced');
+                const f125Advanced = document.getElementById('f1-25-advanced');
+                const reallifeAdvanced = document.getElementById('reallife-advanced');
+                const reallifeDriver = document.getElementById('reallife-driver');
+                const fahrstilOption = document.getElementById('fahrstil-option');
+                
+                // Alle Infos und erweiterten Einstellungen zurücksetzen
+                onlineInfo.classList.add('hidden');
+                reallifeInfo.classList.add('hidden');
+                f1ManagerOptions.classList.add('hidden');
+                f1ManagerAdvanced.classList.add('hidden');
+                f125Advanced.classList.add('hidden');
+                reallifeAdvanced.classList.add('hidden');
+                reallifeDriver.classList.add('hidden');
+                fahrstilOption.classList.remove('hidden');
+                
+                // Modus-spezifische Einstellungen anzeigen
+                if (mode === 'online') {
+                    onlineInfo.classList.remove('hidden');
+                    f125Advanced.classList.remove('hidden');
+                } else if (mode === 'f1-manager') {
+                    f1ManagerOptions.classList.remove('hidden');
+                    f1ManagerAdvanced.classList.remove('hidden');
+                } else if (mode === 'f1-25') {
+                    f125Advanced.classList.remove('hidden');
+                } else if (mode === 'reallife') {
+                    reallifeInfo.classList.remove('hidden');
+                    reallifeAdvanced.classList.remove('hidden');
+                    reallifeDriver.classList.remove('hidden');
+                    fahrstilOption.classList.add('hidden'); // Fahrstil wird im Real-Life-Modus nicht abgefragt
+                    updateDriverInfo();
+                }
+            });
+        });
+
+        // Fahrer-Info aktualisieren
+        function updateDriverInfo() {
+            const driverSelect = document.getElementById('driver');
+            const driverInfo = document.getElementById('driver-info');
+            const selectedDriver = fahrerDaten[driverSelect.value];
+            
+            if (selectedDriver) {
+                driverInfo.innerHTML = `
+                    <strong>Team:</strong> ${teamDaten[selectedDriver.team].name}<br>
+                    <strong>Aggression:</strong> ${Math.round(selectedDriver.aggression * 100)}% |
+                    <strong>Konsistenz:</strong> ${Math.round(selectedDriver.consistency * 100)}%<br>
+                    <strong>Regenfähigkeit:</strong> ${Math.round(selectedDriver.wetSkill * 100)}% |
+                    <strong>Überholen:</strong> ${Math.round(selectedDriver.overtaking * 100)}%
+                `;
+            }
+        }
+
+        // Event-Listener für Fahrer-Auswahl
+        document.getElementById('driver').addEventListener('change', updateDriverInfo);
+
+        // Regenwahrscheinlichkeit Slider
+        const regenSlider = document.getElementById('regen-wahrscheinlichkeit');
+        const regenValue = document.getElementById('regen-value');
+        if (regenSlider) {
+            regenSlider.addEventListener('input', function() {
+                regenValue.textContent = this.value + '%';
+            });
+        }
+
+        // Regenwahrscheinlichkeit Slider für Manager
+        const regenSliderManager = document.getElementById('regen-wahrscheinlichkeit-manager');
+        const regenValueManager = document.getElementById('regen-value-manager');
+        if (regenSliderManager) {
+            regenSliderManager.addEventListener('input', function() {
+                regenValueManager.textContent = this.value + '%';
+            });
+        }
+
+        // Regenwahrscheinlichkeit Slider für Real-Life
+        const regenSliderRealLife = document.getElementById('regen-wahrscheinlichkeit-reallife');
+        const regenValueRealLife = document.getElementById('regen-value-reallife');
+        if (regenSliderRealLife) {
+            regenSliderRealLife.addEventListener('input', function() {
+                regenValueRealLife.textContent = this.value + '%';
+            });
+        }
+
+        // Funktion zum Befüllen der Dropdown-Menüs
+        function ladeDaten() {
+            const streckenSelect = document.getElementById('strecke');
+            for (const [key, strecke] of Object.entries(streckenDaten)) {
+                const option = new Option(strecke.name, key);
+                streckenSelect.add(option);
+            }
+
+            const teamSelect = document.getElementById('team');
+            for (const [key, team] of Object.entries(teamDaten)) {
+                const option = new Option(team.name, key);
+                teamSelect.add(option);
+            }
+
+            const driverSelect = document.getElementById('driver');
+            for (const [key, driver] of Object.entries(fahrerDaten)) {
+                const option = new Option(driver.name, key);
+                driverSelect.add(option);
+            }
+        }
+
+        // Funktion zur Berechnung der genauen Endplatzierung für Real-Life
+        function berechneExakteEndplatzierung(startposition, team, fahrer, strecke, strategie, wetter) {
+            // Basis-Position basierend auf Startposition
+            let exactPosition = startposition;
+            
+            // Team-Performance-Anpassung basierend auf Strecke
+            const teamPerformance = strecke.teamPerformance[team] || 0.7;
+            exactPosition -= (teamPerformance - 0.5) * 10;
+            
+            // Fahrer-Anpassung
+            exactPosition -= (fahrer.racecraft - 0.7) * 6;
+            exactPosition -= (fahrer.consistency - 0.7) * 4;
+            
+            // Strategie-Anpassung
+            if (strategie.stints.length === 3) { // 2-Stopp
+                exactPosition -= 1.5; // Aggressive Strategie kann mehr Positionen gutmachen
+            } else if (strategie.stints[0].reifen === "Soft") {
+                exactPosition -= 1; // Aggressive Reifenwahl
+            }
+            
+            // Strecken-Anpassung
+            if (strecke.ueberholen === "einfach") {
+                exactPosition -= 1.5; // Mehr Überholmöglichkeiten
+            } else if (strecke.ueberholen === "sehr schwierig") {
+                exactPosition += 1; // Weniger Überholmöglichkeiten
+            }
+            
+            // Wetter-Anpassung
+            if (wetter === "nass") {
+                exactPosition -= (fahrer.wetSkill - 0.7) * 3;
+            }
+            
+            // Sicherstellen, dass die Position im gültigen Bereich liegt
+            exactPosition = Math.max(1, Math.min(20, Math.round(exactPosition)));
+            
+            // Wahrscheinlichkeiten berechnen
+            let podiumChance, pointsChance, outChance;
+            
+            if (exactPosition <= 3) {
+                podiumChance = 70 + (4 - exactPosition) * 10;
+                pointsChance = 25;
+                outChance = 5;
+            } else if (exactPosition <= 10) {
+                podiumChance = (11 - exactPosition) * 5;
+                pointsChance = 70 - (exactPosition - 4) * 5;
+                outChance = 30 - (11 - exactPosition) * 3;
+            } else {
+                podiumChance = 2;
+                pointsChance = (21 - exactPosition) * 8;
+                outChance = 80 - (21 - exactPosition) * 4;
+            }
+            
+            // Normalisieren
+            const total = podiumChance + pointsChance + outChance;
+            podiumChance = Math.round(podiumChance / total * 100);
+            pointsChance = Math.round(pointsChance / total * 100);
+            outChance = 100 - podiumChance - pointsChance;
+            
+            // Konfidenz berechnen
+            let confidence = 75;
+            if (teamPerformance > 0.8) confidence += 10;
+            if (fahrer.consistency > 0.85) confidence += 5;
+            if (strategie.stints.length === 2) confidence += 5;
+            
+            confidence = Math.min(95, confidence);
+            
+            let confidenceText = "";
+            if (confidence >= 85) confidenceText = "Sehr hohe Wahrscheinlichkeit";
+            else if (confidence >= 75) confidenceText = "Hohe Wahrscheinlichkeit";
+            else if (confidence >= 65) confidenceText = "Mittlere Wahrscheinlichkeit";
+            else confidenceText = "Geringe Wahrscheinlichkeit";
+            
+            confidenceText += ` (${confidence}%)`;
+            
+            return {
+                exact: exactPosition,
+                podium: podiumChance,
+                points: pointsChance,
+                out: outChance,
+                confidence: confidence,
+                confidenceText: confidenceText,
+                teamPerformance: teamPerformance
+            };
+        }
+
+        // Funktion zur Erstellung von Rennhöhepunkten
+        function erstelleRennHoehepunkte(strecke, fahrer, strategie, gesamtRunden, startposition, endposition) {
+            const highlights = [];
+            
+            // Startphase
+            highlights.push({
+                icon: "🚦",
+                title: "Startphase (Runde 1-3)",
+                desc: `${fahrer.name} wird versuchen, ${startposition > 5 ? 'vorsichtig Positionen zu machen' : 'seine Position zu verteidigen'}. Achte auf die Reifentemperatur in den ersten Kurven.`
+            });
+            
+            // Erster Stint
+            const ersteStintEnde = strategie.stints[0].runden;
+            highlights.push({
+                icon: "⏱️",
+                title: `Erster Stint (bis Runde ${ersteStintEnde})`,
+                desc: `${fahrer.name} fährt auf ${strategie.stints[0].reifen}-Reifen. ${strategie.stints[0].reifen === 'Soft' ? 'Aggressive Pace, aber hoher Verschleiß.' : 'Gute Balance zwischen Pace und Haltbarkeit.'}`
+            });
+            
+            // Boxenstopp
+            if (strategie.stints.length > 1) {
+                highlights.push({
+                    icon: "🛑",
+                    title: `Erster Boxenstopp (Runde ${ersteStintEnde})`,
+                    desc: `Wechsel auf ${strategie.stints[1].reifen}-Reifen. Geschätzte Standzeit: ${strecke.pitstopZeit}s. Wichtiger Moment für Unter- oder Overcut.`
+                });
+            }
+            
+            // Mittleres Rennphase
+            const mittlerePhaseStart = ersteStintEnde + 5;
+            const mittlerePhaseEnde = ersteStintEnde + 15;
+            highlights.push({
+                icon: "📈",
+                title: `Kritische Phase (Runde ${mittlerePhaseStart}-${mittlerePhaseEnde})`,
+                desc: `Hier entscheidet sich oft das Rennen. ${fahrer.name} muss ${fahrer.consistency > 0.8 ? 'seinen konsistenten Rhythmus' : 'seine Aggression'} nutzen, um Positionen zu machen.`
+            });
+            
+            // Zweiter Stopp falls vorhanden
+            if (strategie.stints.length > 2) {
+                const zweiterStopp = ersteStintEnde + strategie.stints[1].runden;
+                highlights.push({
+                    icon: "🛑",
+                    title: `Zweiter Boxenstopp (Runde ${zweiterStopp})`,
+                    desc: `Finaler Reifenwechsel auf ${strategie.stints[2].reifen}-Reifen. Letzte Chance für strategische Anpassungen.`
+                });
+            }
+            
+            // Finale Phase
+            const finalePhaseStart = gesamtRunden - 10;
+            highlights.push({
+                icon: "🏁",
+                title: `Finale Phase (Runde ${finalePhaseStart}-${gesamtRunden})`,
+                desc: `Alles oder nichts! ${fahrer.name} wird ${endposition < startposition ? 'seine Position verteidigen' : 'versuchen, weitere Positionen zu machen'}. Reifenmanagement ist jetzt kritisch.`
+            });
+            
+            // Besonderer Höhepunkt basierend auf Fahrer
+            if (fahrer.overtaking > 0.85) {
+                highlights.push({
+                    icon: "💨",
+                    title: "Überholspecial",
+                    desc: `${fahrer.name} ist bekannt für spektakuläre Überholmanöver. Achte auf Runde ${Math.round(gesamtRunden/2)} für mögliche Action.`
+                });
+            }
+            
+            if (fahrer.wetSkill > 0.85) {
+                highlights.push({
+                    icon: "🌧️",
+                    title: "Regenvorteil",
+                    desc: `Bei Regenwetter hat ${fahrer.name} einen klaren Vorteil. Seine Regenfähigkeiten könnten das Rennen entscheiden.`
+                });
+            }
+            
+            return highlights;
+        }
+
+        // Funktion zur Berechnung der Endplatz-Vorhersage
+        function berechneEndplatzierung(startposition, team, strategie, strecke, fahrstil, spielModus, fahrer = null) {
+            // Für Real-Life-Modus verwenden wir die spezielle Funktion
+            if (spielModus === 'reallife' && fahrer) {
+                return berechneExakteEndplatzierung(startposition, team, fahrer, strecke, strategie, document.getElementById('wetter').value);
+            }
+            
+            // Alte Logik für andere Modi (vereinfacht)
+            let basePosition = startposition;
+            
+            if (spielModus === 'reallife') {
+                basePosition -= (1 - team.realLifePace) * 10;
+            } else {
+                basePosition -= (1 - team.pace) * 10;
+            }
+            
+            if (strategie.stints.length === 3) {
+                basePosition -= 2;
+            } else if (strategie.stints[0].reifen === "Soft") {
+                basePosition -= 1;
+            }
+            
+            if (strecke.ueberholen === "einfach") {
+                basePosition -= 1;
+            } else if (strecke.ueberholen === "sehr schwierig") {
+                basePosition += 1;
+            }
+            
+            if (fahrstil === "aggressiv") {
+                basePosition -= 2;
+            } else if (fahrstil === "konservativ") {
+                basePosition += 1;
+            }
+            
+            basePosition = Math.max(1, Math.min(20, Math.round(basePosition)));
+            
+            const minPosition = Math.max(1, basePosition - 2);
+            const maxPosition = Math.min(20, basePosition + 2);
+            
+            let podiumChance = Math.max(0, Math.min(30, (5 - basePosition) * 10));
+            let pointsChance = Math.max(0, Math.min(70, (11 - basePosition) * 10));
+            let outChance = 100 - podiumChance - pointsChance;
+            
+            return {
+                range: `P${minPosition} - P${maxPosition}`,
+                podium: podiumChance,
+                points: pointsChance,
+                out: outChance,
+                exact: basePosition,
+                confidence: 70,
+                confidenceText: "Mittlere Wahrscheinlichkeit (70%)",
+                teamPerformance: 0.7
+            };
+        }
+
+        // Funktion zur Berechnung der Überholvorhersage
+        function berechneUeberholvorhersage(strecke, strategie, startposition) {
+            const ueberholRunden = [];
+            
+            if (strategie.stints.length > 1) {
+                strategie.stints.forEach((stint, index) => {
+                    if (index > 0) {
+                        const ueberholRunde = Math.round(stint.runden / 2) + 1;
+                        ueberholRunden.push(ueberholRunde);
+                    }
+                });
+            }
+            
+            if (strecke.ueberholen === "einfach") {
+                ueberholRunden.push(8, 15, 25, 35);
+            } else if (strecke.ueberholen === "mittel") {
+                ueberholRunden.push(12, 22, 32);
+            } else {
+                ueberholRunden.push(18, 28);
+            }
+            
+            const positionen = Math.max(1, Math.min(8, 10 - startposition + Math.floor(Math.random() * 4)));
+            
+            return {
+                positionen: positionen,
+                besteRunden: ueberholRunden.slice(0, 2)
+            };
+        }
+
+        // Funktion zur Berechnung der Boxenstopp-Zeiten
+        function berechneBoxenstoppZeiten(strecke, strategie) {
+            const anzahlStopps = strategie.stints.length - 1;
+            const basisZeit = strecke.pitstopZeit;
+            
+            const stoppZeiten = [];
+            let gesamtVerlust = 0;
+            
+            for (let i = 0; i < anzahlStopps; i++) {
+                const zeit = basisZeit + (Math.random() * 0.4 - 0.2);
+                stoppZeiten.push(zeit.toFixed(1));
+                gesamtVerlust += zeit + 15;
+            }
+            
+            return {
+                stoppZeiten: stoppZeiten,
+                gesamtVerlust: gesamtVerlust.toFixed(0)
+            };
+        }
+
+        // Funktion zur Erstellung der Wettervorhersage
+        function erstelleWettervorhersage(gesamtRunden, regenWahrscheinlichkeit, regenStart) {
+            const timeline = [];
+            const regenEnde = parseInt(regenStart) + 15;
+            
+            for (let i = 0; i < 3; i++) {
+                const start = i * Math.floor(gesamtRunden / 3) + 1;
+                const ende = (i + 1) * Math.floor(gesamtRunden / 3);
+                
+                let wetter = "Trocken";
+                let temp = 25;
+                
+                if (start <= regenEnde && ende >= regenStart) {
+                    if (regenWahrscheinlichkeit > 50) {
+                        wetter = "Leichter Regen";
+                        temp = 22;
+                    } else {
+                        wetter = "Wechselhaft";
+                        temp = 24;
+                    }
+                }
+                
+                timeline.push({
+                    start: start,
+                    ende: ende,
+                    wetter: wetter,
+                    temp: temp
+                });
+            }
+            
+            return timeline;
+        }
+
+        // Funktion zur Vorhersage des Rennverlaufs
+        function erstelleRennverlauf(strecke, team, startposition, strategie, gesamtRunden, rennLaenge, spielModus) {
+            let verlaufHTML = "";
+            
+            // Rennstart-Vorhersage
+            verlaufHTML += `<div class="prediction-phase">
+                <div class="phase-title">Rennstart (Runden 1-3)</div>
+                <div class="phase-desc">`;
+            
+            if (startposition <= 5) {
+                verlaufHTML += `Konzentriere dich darauf, deine Position zu halten. Vermeide frühe Kämpfe, um Reifen zu schonen.`;
+            } else if (startposition <= 10) {
+                verlaufHTML += `Versuche in den ersten Runden vorsichtig Positionen zu machen. Achte auf die Reifentemperatur.`;
+            } else {
+                verlaufHTML += `Fahre defensiv und vermeide Risiken. Deine Stärke kommt später durch die Strategie.`;
+            }
+            
+            if (strecke.ueberholen === "einfach") {
+                verlaufHTML += ` <span class="overtake-opportunity">Nutze die DRS-Zonen für Überholmanöver.</span>`;
+            } else if (strecke.ueberholen === "sehr schwierig") {
+                verlaufHTML += ` <span class="risk-note">Überholen fast unmöglich - setze auf Strategie!</span>`;
+            }
+            
+            if (spielModus === 'online') {
+                verlaufHTML += ` <span class="info-note">Online: Alle haben gleiche Performance - deine Strategie entscheidet!</span>`;
+            } else if (spielModus === 'reallife') {
+                verlaufHTML += ` <span class="info-note">Real-Life: Basierend auf aktuellen Team-Performances und Fahrerstärken der Saison 2025.</span>`;
+            }
+            
+            verlaufHTML += `</div></div>`;
+            
+            // Erste Rennphase
+            const erstePhaseEnde = Math.round(gesamtRunden * (rennLaenge === "kurz" ? 0.4 : 0.35));
+            verlaufHTML += `<div class="prediction-phase">
+                <div class="phase-title">Erste Phase (Runden 4-${erstePhaseEnde})</div>
+                <div class="phase-desc">`;
+            
+            verlaufHTML += `Etabliere einen konstanten Rhythmus. `;
+            
+            if (strategie.stints[0].reifen === "Soft") {
+                verlaufHTML += `Die Soft-Reifen bieten maximale Geschwindigkeit, aber achte auf erhöhten Verschleiß. `;
+            } else if (strategie.stints[0].reifen === "Medium") {
+                verlaufHTML += `Die Medium-Reifen bieten eine gute Balance zwischen Pace und Haltbarkeit. `;
+            } else {
+                verlaufHTML += `Die Hard-Reifen sind sehr langlebig - du wirst am Anfang langsamer sein. `;
+            }
+            
+            if (team.reifenPerformance < 1.0) {
+                verlaufHTML += `<span class="strategy-tip">Dein Team schont Reifen gut - du kannst länger pushen.</span>`;
+            } else if (team.reifenPerformance > 1.05) {
+                verlaufHTML += ` <span class="risk-note">Achtung: Dein Team hat erhöhten Reifenverschleiß!</span>`;
+            }
+            
+            // Rote Flagge Warnung für F1 Manager
+            if (spielModus === 'f1-manager' && document.getElementById('rote-flagge').checked) {
+                verlaufHTML += ` <span class="risk-note">Rote-Flagge-Risiko: Bereite alternative Strategien vor!</span>`;
+            }
+            
+            verlaufHTML += `</div></div>`;
+            
+            // Mittlere Rennphase
+            const mittlerePhaseEnde = Math.round(gesamtRunden * (rennLaenge === "kurz" ? 0.8 : 0.7));
+            verlaufHTML += `<div class="prediction-phase">
+                <div class="phase-title">Mittlere Phase (Runden ${erstePhaseEnde+1}-${mittlerePhaseEnde})</div>
+                <div class="phase-desc">`;
+            
+            if (strategie.stints.length === 2) {
+                verlaufHTML += `Ein-Stopp-Strategie: Boxenstopp um Runde ${strategie.stints[0].runden}. `;
+                
+                if (rennLaenge === "kurz" || rennLaenge === "mittel35") {
+                    verlaufHTML += `Bei kurzen Rennen ist Ein-Stopp die Standardstrategie. `;
+                }
+                
+                if (startposition > 10) {
+                    verlaufHTML += `<span class="strategy-tip">Tipp: UnderCut - stoppe 2 Runden früher als direkte Konkurrenten.</span>`;
+                }
+            } else {
+                verlaufHTML += `Zwei-Stopp-Strategie: Erster Stopp Runde ${strategie.stints[0].runden}, zweiter Stopp Runde ${strategie.stints[0].runden + strategie.stints[1].runden}. `;
+                verlaufHTML += `Aggressive Strategie für Strecken mit hohem Verschleiß.`;
+            }
+            
+            verlaufHTML += `</div></div>`;
+            
+            // Finale Rennphase
+            verlaufHTML += `<div class="prediction-phase">
+                <div class="phase-title">Finale Phase (Runden ${mittlerePhaseEnde+1}-${gesamtRunden})</div>
+                <div class="phase-desc">`;
+            
+            if (strategie.stints.length === 2) {
+                verlaufHTML += `Du beendest das Rennen auf ${strategie.stints[1].reifen}-Reifen. `;
+                
+                if (strategie.stints[1].reifen === "Soft") {
+                    verlaufHTML += `Mit den Soft-Reifen hast du am Ende einen Geschwindigkeitsvorteil. `;
+                } else if (strategie.stints[1].reifen === "Medium") {
+                    verlaufHTML += `Die Medium-Reifen bieten konstante Performance bis zum Ende. `;
+                } else {
+                    verlaufHTML += `Die Hard-Reisen sind sehr konservativ - du wirst am Ende langsamer sein. `;
+                }
+            } else {
+                verlaufHTML += `Du beendest das Rennen auf ${strategie.stints[2].reifen}-Reifen. `;
+                verlaufHTML += `<span class="overtake-opportunity">Mit frischen Reifen hast du einen klaren Vorteil am Ende!</span>`;
+            }
+            
+            if (strecke.reifenAbnutzung === "hoch") {
+                verlaufHTML += ` <span class="risk-note">Achtung: Hohe Reifenabnutzung auf dieser Strecke!</span>`;
+            }
+            
+            if (spielModus === 'f1-manager') {
+                verlaufHTML += ` <span class="strategy-tip">F1 Manager: Achte auf Teileschäden und Personalermüdung.</span>`;
+            }
+            
+            verlaufHTML += `</div></div>`;
+            
+            return verlaufHTML;
+        }
+
+        // Realistische Strategieberechnung
+        function berechneRealistischeStrategie(strecke, team, rennLaenge, startposition, wetter, spielModus, fahrstil = "ausgeglichen") {
+            const gesamtRunden = Math.round(strecke.runden * 
+                (rennLaenge === "kurz" ? 0.25 : 
+                 rennLaenge === "mittel35" ? 0.35 : 
+                 rennLaenge === "mittel50" ? 0.5 : 1));
+            
+            let strategie = "";
+            let stints = [];
+            let vorteilHinweis = "";
+
+            // Nasswetter-Strategien
+            if (wetter === "nass") {
+                strategie = "Nasswetter-Strategie: Starte auf INTERMEDIATE oder FULL WET, je nach Regenstärke.";
+                stints = [{ reifen: "Intermediate", runden: gesamtRunden }];
+                vorteilHinweis = "Bei abtrocknender Strecke früh auf Intermediate wechseln.";
+                return { strategie, stints, vorteilHinweis, gesamtRunden };
+            }
+
+            // Real-Life-Modus: Strategien basierend auf aktuellen Rennen
+            if (spielModus === 'reallife') {
+                // Im Real-Life-Modus verwenden wir aktuelle Strategien aus der Formel 1 2025
+                const ersteStintRunden = Math.round(gesamtRunden * 0.45);
+                
+                strategie = `Real-Life Standardstrategie 2025: Starte auf MEDIUM (bis Runde ${ersteStintRunden}), dann auf HARD.`;
+                stints = [
+                    { reifen: "Medium", runden: ersteStintRunden },
+                    { reifen: "Hard", runden: gesamtRunden - ersteStintRunden }
+                ];
+                
+                vorteilHinweis = "Diese Strategie wird aktuell von den meisten Teams auf den meisten Strecken gefahren.";
+                return { strategie, stints, vorteilHinweis, gesamtRunden };
+            }
+
+            // Online-Modus: Aggressivere Strategien
+            if (spielModus === 'online') {
+                // Im Online-Modus sind aggressivere Strategien oft besser
+                const ersteStintRunden = Math.round(gesamtRunden * 0.4);
+                strategie = `Online-Strategie: Starte auf SOFT (bis Runde ${ersteStintRunden}), dann auf MEDIUM.`;
+                stints = [
+                    { reifen: "Soft", runden: ersteStintRunden },
+                    { reifen: "Medium", runden: gesamtRunden - ersteStintRunden }
+                ];
+                vorteilHinweis = "Im Online-Modus zählt Pace - aggressive Strategien sind oft erfolgreich.";
+                return { strategie, stints, vorteilHinweis, gesamtRunden };
+            }
+
+            // Trocken-Strategien basierend auf Strecke und Rennlänge
+            if (rennLaenge === "kurz" || rennLaenge === "mittel35") {
+                // Kurze Rennen: Fast immer 1-Stopp
+                const ersteStintRunden = Math.round(gesamtRunden * 0.5);
+                
+                // Reifenwahl basierend auf Streckenabnutzung
+                let startReifen = "Medium";
+                let zweiteReifen = "Hard";
+                
+                if (strecke.reifenAbnutzung === "niedrig") {
+                    startReifen = "Soft";
+                    zweiteReifen = "Medium";
+                } else if (strecke.reifenAbnutzung === "hoch" && team.reifenPerformance > 1.05) {
+                    startReifen = "Medium";
+                    zweiteReifen = "Medium"; // Zwei Medium-Stints bei hohem Verschleiß
+                }
+                
+                strategie = `Ein-Stopp-Strategie: Starte auf ${startReifen} (bis Runde ${ersteStintRunden}), dann auf ${zweiteReifen}.`;
+                stints = [
+                    { reifen: startReifen, runden: ersteStintRunden },
+                    { reifen: zweiteReifen, runden: gesamtRunden - ersteStintRunden }
+                ];
+                
+                vorteilHinweis = "Bei kurzen Rennen ist Ein-Stopp die schnellste Strategie.";
+                
+            } else {
+                // Lange Rennen: 1 oder 2 Stopps basierend auf Streckenabnutzung
+                if (strecke.reifenAbnutzung === "hoch" && team.reifenPerformance >= 1.0) {
+                    // Hoher Verschleiß -> 2-Stopp
+                    const stint1 = Math.round(gesamtRunden * 0.25);
+                    const stint2 = Math.round(gesamtRunden * 0.4);
+                    const stint3 = gesamtRunden - stint1 - stint2;
+                    
+                    strategie = `Zweistopp-Strategie: Starte auf MEDIUM (bis Runde ${stint1}), dann HARD (bis Runde ${stint1+stint2}), dann MEDIUM.`;
+                    stints = [
+                        { reifen: "Medium", runden: stint1 },
+                        { reifen: "Hard", runden: stint2 },
+                        { reifen: "Medium", runden: stint3 }
+                    ];
+                    
+                    vorteilHinweis = "Aggressive Strategie für Strecken mit hohem Verschleiß.";
+                } else {
+                    // Standard 1-Stopp
+                    const ersteStintRunden = Math.round(gesamtRunden * 0.45);
+                    
+                    strategie = `Ein-Stopp-Strategie: Starte auf MEDIUM (bis Runde ${ersteStintRunden}), dann auf HARD.`;
+                    stints = [
+                        { reifen: "Medium", runden: ersteStintRunden },
+                        { reifen: "Hard", runden: gesamtRunden - ersteStintRunden }
+                    ];
+                    
+                    vorteilHinweis = "Robuste Ein-Stopp-Strategie für die meisten Strecken.";
+                }
+            }
+
+            // Team-spezifische Anpassungen
+            if (team.reifenPerformance < 1.0) {
+                vorteilHinweis += " Dein Team schont Reifen gut - du kannst Stints verlängern.";
+            } else if (team.reifenPerformance > 1.05) {
+                vorteilHinweis += " Achtung: Höherer Reifenverschleiß - fahre konservativer.";
+            }
+
+            // Startposition-basierte Tipps
+            if (startposition > 15) {
+                vorteilHinweis += " Von hinten: UnderCut für Positionsgewinne nutzen.";
+            } else if (startposition <= 5) {
+                vorteilHinweis += " Gute Position: ÜberCut für frische Reifen am Ende in Betracht ziehen.";
+            }
+
+            return { strategie, stints, vorteilHinweis, gesamtRunden };
+        }
+
+        // Rote Flagge Logik für F1 Manager
+        function berechneRoteFlagge(strecke, gesamtRunden) {
+            const roteFlaggeWahrscheinlichkeit = Math.random();
+            let roteFlaggeText = "";
+            
+            if (roteFlaggeWahrscheinlichkeit > 0.7) {
+                const flaggeRunde = Math.floor(Math.random() * gesamtRunden * 0.7) + 5;
+                roteFlaggeText = `Hohe Wahrscheinlichkeit für Rote Flagge um Runde ${flaggeRunde}. `;
+                
+                if (flaggeRunde < gesamtRunden * 0.3) {
+                    roteFlaggeText += "Frühe Rote Flagge - überlege Doppelstopp-Strategie.";
+                } else if (flaggeRunde > gesamtRunden * 0.7) {
+                    roteFlaggeText += "Späte Rote Flagge - könnte deine Strategie komplett verändern.";
+                } else {
+                    roteFlaggeText += "Mittlere Rennphase - passe deine Strategie flexibel an.";
+                }
+            } else {
+                roteFlaggeText = "Geringe Wahrscheinlichkeit für Rote Flagge. Standardstrategie sollte funktionieren.";
+            }
+            
+            return roteFlaggeText;
+        }
+
+        // Kraftstoffberechnung
+        function berechneKraftstoff(strecke, team, gesamtRunden, fuelLoad, engineMode) {
+            let kraftstoffVerbrauch = 0;
+            
+            // Basisverbrauch pro Runde basierend auf Strecke
+            switch(strecke.kraftstoffVerbrauch) {
+                case "sehr hoch": kraftstoffVerbrauch = 2.8; break;
+                case "hoch": kraftstoffVerbrauch = 2.5; break;
+                case "mittel": kraftstoffVerbrauch = 2.2; break;
+                case "niedrig": kraftstoffVerbrauch = 1.9; break;
+            }
+            
+            // Motormodus-Anpassung
+            switch(engineMode) {
+                case "aggressiv": kraftstoffVerbrauch *= 1.15; break;
+                case "konservativ": kraftstoffVerbrauch *= 0.85; break;
+            }
+            
+            // Team-Effizienz
+            kraftstoffVerbrauch *= team.motoreffizienz;
+            
+            const gesamtVerbrauch = kraftstoffVerbrauch * gesamtRunden;
+            const sparbedarf = gesamtVerbrauch - fuelLoad;
+            
+            let kraftstoffText = "";
+            
+            if (sparbedarf > 0) {
+                kraftstoffText = `Achtung: Du benötigst ${sparbedarf.toFixed(1)}kg mehr Kraftstoff als geladen. `;
+                kraftstoffText += `Fahre ${(sparbedarf / gesamtRunden * 100).toFixed(1)}% im Lift-and-Coast Modus.`;
+            } else {
+                kraftstoffText = `Perfekt! Du hast ${(-sparbedarf).toFixed(1)}kg Puffer. Du kannst aggressiv fahren.`;
+            }
+            
+            return kraftstoffText;
+        }
+
+        // Strategievergleich
+        function vergleicheStrategien() {
+            const gewaehlteStreckeKey = document.getElementById('strecke').value;
+            const gewaehltesTeamKey = document.getElementById('team').value;
+            const rennLaenge = document.getElementById('renn-laenge').value;
+            const startposition = parseInt(document.getElementById('startposition').value);
+            const wetter = document.getElementById('wetter').value;
+            const spielModus = document.querySelector('.mode-btn.active').getAttribute('data-mode');
+            
+            const strecke = streckenDaten[gewaehlteStreckeKey];
+            const team = spielModus === 'online' ? onlineTeamDaten[gewaehltesTeamKey] : teamDaten[gewaehltesTeamKey];
+            const gesamtRunden = Math.round(strecke.runden * 
+                (rennLaenge === "kurz" ? 0.25 : 
+                 rennLaenge === "mittel35" ? 0.35 : 
+                 rennLaenge === "mittel50" ? 0.5 : 1));
+            
+            const strategies = [];
+            
+            // 1-Stopp-Strategien
+            if (document.getElementById('compare-1stop').checked) {
+                // Konservative 1-Stopp
+                const stint1 = Math.round(gesamtRunden * 0.5);
+                strategies.push({
+                    name: "Konservativ 1-Stopp",
+                    stops: 1,
+                    stints: [
+                        { reifen: "Medium", runden: stint1 },
+                        { reifen: "Hard", runden: gesamtRunden - stint1 }
+                    ],
+                    time: "1:25:30.123",
+                    risk: "Niedrig",
+                    advantage: "Robust, wenig Risiko"
+                });
+                
+                // Aggressive 1-Stopp
+                strategies.push({
+                    name: "Aggressiv 1-Stopp",
+                    stops: 1,
+                    stints: [
+                        { reifen: "Soft", runden: Math.round(gesamtRunden * 0.4) },
+                        { reifen: "Medium", runden: gesamtRunden - Math.round(gesamtRunden * 0.4) }
+                    ],
+                    time: "1:24:45.678",
+                    risk: "Mittel",
+                    advantage: "Schneller Start, früher Stopp"
+                });
+            }
+            
+            // 2-Stopp-Strategien
+            if (document.getElementById('compare-2stop').checked) {
+                // Standard 2-Stopp
+                const stint1 = Math.round(gesamtRunden * 0.25);
+                const stint2 = Math.round(gesamtRunden * 0.4);
+                strategies.push({
+                    name: "Standard 2-Stopp",
+                    stops: 2,
+                    stints: [
+                        { reifen: "Medium", runden: stint1 },
+                        { reifen: "Hard", runden: stint2 },
+                        { reifen: "Medium", runden: gesamtRunden - stint1 - stint2 }
+                    ],
+                    time: "1:24:15.456",
+                    risk: "Mittel",
+                    advantage: "Gute Balance"
+                });
+                
+                // Aggressive 2-Stopp
+                strategies.push({
+                    name: "Aggressiv 2-Stopp",
+                    stops: 2,
+                    stints: [
+                        { reifen: "Soft", runden: Math.round(gesamtRunden * 0.2) },
+                        { reifen: "Soft", runden: Math.round(gesamtRunden * 0.35) },
+                        { reifen: "Medium", runden: gesamtRunden - Math.round(gesamtRunden * 0.55) }
+                    ],
+                    time: "1:23:55.789",
+                    risk: "Hoch",
+                    advantage: "Maximale Geschwindigkeit"
+                });
+            }
+            
+            // Alternative Strategien
+            if (document.getElementById('compare-alternative').checked) {
+                // UnderCut Strategie
+                strategies.push({
+                    name: "UnderCut Spezial",
+                    stops: 1,
+                    stints: [
+                        { reifen: "Soft", runden: Math.round(gesamtRunden * 0.35) },
+                        { reifen: "Hard", runden: gesamtRunden - Math.round(gesamtRunden * 0.35) }
+                    ],
+                    time: "1:24:30.123",
+                    risk: "Mittel",
+                    advantage: "Früher Stopp für Positionsgewinne"
+                });
+                
+                // OverCut Strategie
+                strategies.push({
+                    name: "OverCut Spezial",
+                    stops: 1,
+                    stints: [
+                        { reifen: "Hard", runden: Math.round(gesamtRunden * 0.65) },
+                        { reifen: "Soft", runden: gesamtRunden - Math.round(gesamtRunden * 0.65) }
+                    ],
+                    time: "1:25:05.456",
+                    risk: "Hoch",
+                    advantage: "Frische Reifen am Ende"
+                });
+            }
+            
+            // Vergleichstabelle erstellen
+            const comparisonBody = document.getElementById('comparison-body');
+            comparisonBody.innerHTML = "";
+            
+            strategies.forEach(strategy => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${strategy.name}</td>
+                    <td>${strategy.stops}</td>
+                    <td>${strategy.time}</td>
+                    <td>${strategy.risk}</td>
+                    <td>${strategy.advantage}</td>
+                `;
+                comparisonBody.appendChild(row);
+            });
+            
+            document.getElementById('strategy-comparison').classList.remove('hidden');
+        }
+
+        // KERNLOGIK: Berechnung der besten Strategie
+        function berechneStrategie() {
+            const gewaehlteStreckeKey = document.getElementById('strecke').value;
+            const gewaehltesTeamKey = document.getElementById('team').value;
+            const rennLaenge = document.getElementById('renn-laenge').value;
+            const startposition = parseInt(document.getElementById('startposition').value);
+            const wetter = document.getElementById('wetter').value;
+            const sicherheitsauto = document.getElementById('sicherheitsauto-wahrscheinlichkeit').value;
+            const spielModus = document.querySelector('.mode-btn.active').getAttribute('data-mode');
+            const streckenTemperatur = document.getElementById('strecken-temperatur').value;
+            const fahrstil = document.getElementById('fahrstil').value;
+
+            if (!gewaehlteStreckeKey || !gewaehltesTeamKey) {
+                alert("Bitte wähle eine Strecke und ein Team aus.");
+                return;
+            }
+
+            const strecke = streckenDaten[gewaehlteStreckeKey];
+            const team = spielModus === 'online' ? onlineTeamDaten[gewaehltesTeamKey] : teamDaten[gewaehltesTeamKey];
+
+            // Fahrer für Real-Life-Modus
+            let fahrer = null;
+            if (spielModus === 'reallife') {
+                const fahrerKey = document.getElementById('driver').value;
+                fahrer = fahrerDaten[fahrerKey];
+            }
+
+            // Realistische Strategie berechnen
+            const { strategie, stints, vorteilHinweis, gesamtRunden } = 
+                berechneRealistischeStrategie(strecke, team, rennLaenge, startposition, wetter, spielModus, fahrstil);
+
+            // Sicherheitsauto-Logik
+            let sicherheitsautoHinweis = "";
+            if (sicherheitsauto === "hoch") {
+                sicherheitsautoHinweis = " Bei Safety Car: Sofort an die Box für kostenlosen Stopp!";
+            }
+
+            // Endplatzierung berechnen
+            const positionPrediction = berechneEndplatzierung(startposition, gewaehltesTeamKey, {stints: stints}, strecke, fahrstil, spielModus, fahrer);
+            
+            // Rennhöhepunkte für Real-Life-Modus
+            const highlightsDiv = document.getElementById('race-highlights');
+            const highlightsContent = document.getElementById('highlights-content');
+            if (spielModus === 'reallife' && fahrer) {
+                const highlights = erstelleRennHoehepunkte(strecke, fahrer, {stints: stints}, gesamtRunden, startposition, positionPrediction.exact);
+                highlightsContent.innerHTML = "";
+                highlights.forEach(highlight => {
+                    const highlightHTML = `
+                        <div class="highlight-item">
+                            <div class="highlight-icon">${highlight.icon}</div>
+                            <div class="highlight-content">
+                                <div class="highlight-title">${highlight.title}</div>
+                                <div class="highlight-desc">${highlight.desc}</div>
+                            </div>
+                        </div>
+                    `;
+                    highlightsContent.innerHTML += highlightHTML;
+                });
+                highlightsDiv.classList.remove('hidden');
+            } else {
+                highlightsDiv.classList.add('hidden');
+            }
+            
+            // Team-Performance für Real-Life-Modus
+            const teamPerformanceDiv = document.getElementById('team-performance');
+            const teamPerformanceBar = document.getElementById('team-performance-bar');
+            const teamPerformanceText = document.getElementById('team-performance-text');
+            if (spielModus === 'reallife') {
+                const performance = positionPrediction.teamPerformance * 100;
+                teamPerformanceBar.style.width = `${performance}%`;
+                
+                let performanceText = "";
+                if (performance >= 85) performanceText = "Ihr Team ist auf dieser Strecke absolut top!";
+                else if (performance >= 75) performanceText = "Ihr Team liegt im oberen Bereich auf dieser Strecke.";
+                else if (performance >= 65) performanceText = "Ihr Team liegt im oberen Mittelfeld auf dieser Strecke.";
+                else if (performance >= 55) performanceText = "Ihr Team liegt im Mittelfeld auf dieser Strecke.";
+                else performanceText = "Ihr Team hat auf dieser Strecke Schwierigkeiten erwartet.";
+                
+                teamPerformanceText.textContent = performanceText;
+                teamPerformanceDiv.classList.remove('hidden');
+            } else {
+                teamPerformanceDiv.classList.add('hidden');
+            }
+            
+            // Überholvorhersage berechnen
+            const overtakingPrediction = berechneUeberholvorhersage(strecke, {stints: stints}, startposition);
+            
+            // Boxenstopp-Zeiten berechnen
+            const pitstopTimes = berechneBoxenstoppZeiten(strecke, {stints: stints});
+            
+            // Wettervorhersage erstellen
+            let regenWahrscheinlichkeit = 20;
+            let regenStart = 20;
+            
+            if (spielModus === 'f1-manager') {
+                regenWahrscheinlichkeit = document.getElementById('regen-wahrscheinlichkeit-manager').value;
+                regenStart = document.getElementById('regen-start-manager').value;
+            } else if (spielModus === 'reallife') {
+                regenWahrscheinlichkeit = document.getElementById('regen-wahrscheinlichkeit-reallife').value;
+                regenStart = document.getElementById('regen-start-reallife').value;
+            } else {
+                regenWahrscheinlichkeit = document.getElementById('regen-wahrscheinlichkeit').value;
+                regenStart = document.getElementById('regen-start').value;
+            }
+            
+            const weatherTimeline = erstelleWettervorhersage(gesamtRunden, regenWahrscheinlichkeit, regenStart);
+
+            // Rote Flagge für F1 Manager
+            const roteFlaggeDiv = document.getElementById('rote-flagge-info');
+            const roteFlaggeText = document.getElementById('rote-flagge-text');
+            if (spielModus === 'f1-manager' && document.getElementById('rote-flagge').checked) {
+                roteFlaggeText.textContent = berechneRoteFlagge(strecke, gesamtRunden);
+                roteFlaggeDiv.classList.remove('hidden');
+            } else {
+                roteFlaggeDiv.classList.add('hidden');
+            }
+
+            // Kraftstoffmanagement nur für F1 Manager
+            const fuelDiv = document.getElementById('fuel-info');
+            const fuelText = document.getElementById('fuel-text');
+            if (spielModus === 'f1-manager') {
+                const fuelLoad = parseInt(document.getElementById('fuel-load').value);
+                const engineMode = document.getElementById('engine-mode').value;
+                fuelText.textContent = berechneKraftstoff(strecke, team, gesamtRunden, fuelLoad, engineMode);
+                fuelDiv.classList.remove('hidden');
+            } else {
+                fuelDiv.classList.add('hidden');
+            }
+
+            // KI-Adaptation für F1 25 und Online
+            const aiDiv = document.getElementById('ai-adaptation');
+            if (spielModus === 'f1-25' || spielModus === 'online') {
+                aiDiv.classList.remove('hidden');
+            } else {
+                aiDiv.classList.add('hidden');
+            }
+
+            // Ergebnis anzeigen
+            const ergebnisDiv = document.getElementById('ergebnis');
+            const verlaufDiv = document.getElementById('rennen-verlauf');
+            const verlaufContent = document.getElementById('verlauf-content');
+            const vorteilDiv = document.getElementById('vorteil-info');
+            const vorteilText = document.getElementById('vorteil-text');
+            
+            // Position Prediction anzeigen
+            const positionDiv = document.getElementById('position-prediction');
+            const exactPosition = document.getElementById('exact-position');
+            const positionConfidence = document.getElementById('position-confidence');
+            const posPodium = document.getElementById('pos-podium');
+            const posPoints = document.getElementById('pos-points');
+            const posOut = document.getElementById('pos-out');
+            
+            if (spielModus === 'reallife') {
+                exactPosition.textContent = `P${positionPrediction.exact}`;
+                positionConfidence.textContent = positionPrediction.confidenceText;
+            } else {
+                exactPosition.textContent = positionPrediction.range;
+                positionConfidence.textContent = `Mittlere Wahrscheinlichkeit (${positionPrediction.confidence}%)`;
+            }
+            
+            posPodium.innerHTML = `P1-P3<br><small>${positionPrediction.podium}%</small>`;
+            posPoints.innerHTML = `P4-P10<br><small>${positionPrediction.points}%</small>`;
+            posOut.innerHTML = `P11-P20<br><small>${positionPrediction.out}%</small>`;
+            positionDiv.classList.remove('hidden');
+            
+            // Überholvorhersage anzeigen
+            const overtakingDiv = document.getElementById('overtaking-prediction');
+            const overtakingText = document.getElementById('overtaking-text');
+            overtakingText.innerHTML = `Mit dieser Strategie kannst du voraussichtlich <strong>${overtakingPrediction.positionen} Positionen</strong> gutmachen.`;
+            overtakingDiv.classList.remove('hidden');
+            
+            // Boxenstopp-Zeiten anzeigen
+            const pitstopDiv = document.getElementById('pitstop-times');
+            if (pitstopTimes.stoppZeiten.length > 0) {
+                let pitstopHTML = `<h3>⏱️ Boxenstopp-Zeiten</h3>`;
+                pitstopTimes.stoppZeiten.forEach((zeit, index) => {
+                    pitstopHTML += `<p><strong>Stopp ${index + 1}:</strong> ~${zeit}s (Runde ${stints[index].runden})</p>`;
+                });
+                pitstopHTML += `<p><strong>Gesamtverlust durch Boxenstopps:</strong> ~${pitstopTimes.gesamtVerlust} Sekunden</p>`;
+                pitstopDiv.innerHTML = pitstopHTML;
+                pitstopDiv.classList.remove('hidden');
+            }
+            
+            // Wettervorhersage anzeigen
+            const weatherDiv = document.getElementById('weather-timeline');
+            let weatherHTML = `<h3>🌤️ Wettervorhersage</h3>`;
+            weatherTimeline.forEach(item => {
+                weatherHTML += `
+                    <div class="timeline-item">
+                        <span>Runde ${item.start}-${item.ende}:</span>
+                        <span>${item.wetter}, ${item.temp}°C</span>
+                    </div>
+                `;
+            });
+            weatherDiv.innerHTML = weatherHTML;
+            weatherDiv.classList.remove('hidden');
+            
+            // Standard-Ergebnis
+            let html = `
+                <h3>${strategie}</h3>
+                <div class="track-info">
+                    <div class="track-info-item">
+                        <div>Reifenabnutzung</div>
+                        <div class="track-info-value">${strecke.reifenAbnutzung.toUpperCase()}</div>
+                    </div>
+                    <div class="track-info-item">
+                        <div>Überholen</div>
+                        <div class="track-info-value">${strecke.ueberholen.toUpperCase()}</div>
+                    </div>
+                    <div class="track-info-item">
+                        <div>Stopps</div>
+                        <div class="track-info-value">${stints.length - 1}</div>
+                    </div>
+                </div>
+                <div class="strategy-details">
+                    <h4>Stint-Aufteilung:</h4>
+                    <ul class="stint-list">
+            `;
+            
+            let aktuelleRunde = 0;
+            stints.forEach((stint, index) => {
+                const previousRunden = aktuelleRunde;
+                aktuelleRunde += stint.runden;
+                html += `<li>Stint ${index + 1}: ${stint.reifen} <span class="stint-runden">${stint.runden} Runden (Runde ${previousRunden + 1}-${aktuelleRunde})</span></li>`;
+            });
+            
+            html += `
+                    </ul>
+                    <p><strong>Gesamtdistanz:</strong> ${gesamtRunden} Runden <span class="race-length-badge">${
+                        rennLaenge === "kurz" ? "25%" : 
+                        rennLaenge === "mittel35" ? "35%" : 
+                        rennLaenge === "mittel50" ? "50%" : "100%"
+                    }</span></p>
+                    <p><strong>Streckeninfo:</strong> ${strecke.beschreibung}</p>
+                    <p><strong>Streckentemperatur:</strong> ${streckenTemperatur} - ${streckenTemperatur === 'heiss' ? 'Erhöhter Reifenverschleiß' : streckenTemperatur === 'kuehl' ? 'Geringerer Reifenverschleiß' : 'Normale Bedingungen'}</p>
+                </div>
+            `;
+            
+            // Reifenvisualisierung hinzufügen
+            html += '<div class="tire-visual">';
+            stints.forEach(stint => {
+                const tireClass = "tire-" + stint.reifen.toLowerCase();
+                html += `<div class="tire-segment ${tireClass}">${stint.reifen}<br>${stint.runden} Runden</div>`;
+            });
+            html += '</div>';
+            
+            ergebnisDiv.innerHTML = html;
+            
+            // Rennverlauf anzeigen
+            verlaufContent.innerHTML = erstelleRennverlauf(strecke, team, startposition, {stints: stints}, gesamtRunden, rennLaenge, spielModus);
+            verlaufDiv.classList.remove('hidden');
+            
+            vorteilText.textContent = vorteilHinweis + sicherheitsautoHinweis;
+            vorteilDiv.classList.remove('hidden');
+        }
+
+        // Initialisierung
+        window.onload = ladeDaten;
+    </script>
+</body>
+</html>
