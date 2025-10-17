@@ -22,6 +22,18 @@
             --online: #00ff88;
             --reallife: #9c27b0;
         }
+
+        .light-mode {
+            --primary: #e10600;
+            --primary-dark: #c10500;
+            --secondary: #f5f5f5;
+            --secondary-light: #e0e0e0;
+            --accent: #333333;
+            --accent-dim: #666666;
+            --background: #ffffff;
+            --card-bg: #f9f9f9;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
         
         * {
             margin: 0;
@@ -36,6 +48,7 @@
             line-height: 1.6;
             padding: 20px;
             min-height: 100vh;
+            transition: all 0.3s ease;
         }
         
         .container {
@@ -787,9 +800,77 @@
             font-size: 0.8rem;
             color: var(--accent-dim);
         }
+
+        /* Light Mode Toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle label {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
     </style>
 </head>
 <body>
+    <div class="theme-toggle">
+        <label for="theme-switch">Light Mode</label>
+        <label class="switch">
+            <input type="checkbox" id="theme-switch">
+            <span class="slider"></span>
+        </label>
+    </div>
+    
     <div class="container">
         <header>
             <h1><span class="f1-logo">🏎️</span> F1 Strategie Rechner 2025 - Ultimative Version</h1>
@@ -1207,393 +1288,393 @@
 
     <script>
         // Datenbank mit allen Strecken und realistischen Eigenschaften für 2025
-        // Datenbank mit allen Strecken und realistischen Eigenschaften für 2025
-const streckenDaten = {
-    "australien": { 
-        name: "Albert Park Circuit", 
-        runden: 58, 
-        reifenAbnutzung: "mittel", 
-        ueberholen: "mittel", 
-        typ: "halbstadt",
-        beschreibung: "Ausgewogene Strecke mit mittlerer Reifenabnutzung",
-        kraftstoffVerbrauch: "mittel",
-        motorschaden: "niedrig",
-        pitstopZeit: 2.2,
-        teamPerformance: {
-            "mclaren": 0.95, "mercedes": 0.90, "ferrari": 0.85, "red-bull": 0.80,
-            "williams": 0.75, "racing-bulls": 0.70, "aston-martin": 0.68,
-            "sauber": 0.65, "haas": 0.60, "alpine": 0.55
-        }
-    },
-    "china": { 
-        name: "Shanghai International Circuit", 
-        runden: 56, 
-        reifenAbnutzung: "hoch", 
-        ueberholen: "einfach", 
-        typ: "standart",
-        beschreibung: "Hohe Reifenabnutzung durch abrasive Streckenoberfläche",
-        kraftstoffVerbrauch: "hoch",
-        motorschaden: "mittel",
-        pitstopZeit: 2.3,
-        teamPerformance: {
-            "mclaren": 0.94, "mercedes": 0.89, "ferrari": 0.84, "red-bull": 0.79,
-            "williams": 0.74, "racing-bulls": 0.69, "aston-martin": 0.67,
-            "sauber": 0.64, "haas": 0.59, "alpine": 0.54
-        }
-    },
-    "japan": { 
-        name: "Suzuka International Racing Course", 
-        runden: 53, 
-        reifenAbnutzung: "hoch", 
-        ueberholen: "mittel", 
-        typ: "standart",
-        beschreibung: "Anspruchsvolle Strecke mit hoher Reifenbelastung",
-        kraftstoffVerbrauch: "mittel",
-        motorschaden: "mittel",
-        pitstopZeit: 2.3,
-        teamPerformance: {
-            "mclaren": 0.93, "mercedes": 0.88, "ferrari": 0.83, "red-bull": 0.78,
-            "williams": 0.73, "racing-bulls": 0.68, "aston-martin": 0.66,
-            "sauber": 0.63, "haas": 0.58, "alpine": 0.53
-        }
-    },
-    "bahrain": { 
-        name: "Bahrain International Circuit", 
-        runden: 57, 
-        reifenAbnutzung: "mittel", 
-        ueberholen: "einfach", 
-        typ: "standart",
-        beschreibung: "Nachtrennen mit gutten Überholmöglichkeiten",
-        kraftstoffVerbrauch: "mittel",
-        motorschaden: "niedrig",
-        pitstopZeit: 2.2,
-        teamPerformance: {
-            "mclaren": 0.92, "mercedes": 0.87, "ferrari": 0.82, "red-bull": 0.77,
-            "williams": 0.72, "racing-bulls": 0.67, "aston-martin": 0.65,
-            "sauber": 0.62, "haas": 0.57, "alpine": 0.52
-        }
-    },
-    "saudi-arabien": { 
-        name: "Jeddah Corniche Circuit", 
-        runden: 50, 
-        reifenAbnutzung: "niedrig", 
-        ueberholen: "einfach", 
-        typ: "stadt",
-        beschreibung: "Schnellste Straßenstrecke der Welt",
-        kraftstoffVerbrauch: "hoch",
-        motorschaden: "hoch",
-        pitstopZeit: 2.4,
-        teamPerformance: {
-            "mclaren": 0.91, "mercedes": 0.86, "ferrari": 0.81, "red-bull": 0.76,
-            "williams": 0.71, "racing-bulls": 0.66, "aston-martin": 0.64,
-            "sauber": 0.61, "haas": 0.56, "alpine": 0.51
-        }
-    },
-    "miami": { 
-        name: "Miami International Autodrome", 
-        runden: 57, 
-        reifenAbnutzung: "mittel", 
-        ueberholen: "mittel", 
-        typ: "stadt",
-        beschreibung: "Strecke mit mittlerer Abnutzung und einigen Überholmöglichkeiten",
-        kraftstoffVerbrauch: "mittel",
-        motorschaden: "niedrig",
-        pitstopZeit: 2.3,
-        teamPerformance: {
-            "mclaren": 0.93, "mercedes": 0.88, "ferrari": 0.83, "red-bull": 0.78,
-            "williams": 0.73, "racing-bulls": 0.68, "aston-martin": 0.66,
-            "sauber": 0.63, "haas": 0.58, "alpine": 0.53
-        }
-    },
-    "imola": { 
-        name: "Imola Circuit", 
-        runden: 63, 
-        reifenAbnutzung: "hoch", 
-        ueberholen: "schwierig", 
-        typ: "standart",
-        beschreibung: "Traditionelle Strecke mit wenigen Überholmöglichkeiten",
-        kraftstoffVerbrauch: "mittel",
-        motorschaden: "mittel",
-        pitstopZeit: 2.3,
-        teamPerformance: {
-            "mclaren": 0.90, "mercedes": 0.85, "ferrari": 0.80, "red-bull": 0.75,
-            "williams": 0.70, "racing-bulls": 0.65, "aston-martin": 0.63,
-            "sauber": 0.60, "haas": 0.55, "alpine": 0.50
-        }
-    },
-    "monaco": { 
-        name: "Circuit de Monaco", 
-        runden: 78, 
-        reifenAbnutzung: "niedrig", 
-        ueberholen: "sehr schwierig", 
-        typ: "stadt",
-        beschreibung: "Niedrigste Reifenabnutzung, aber kaum Überholmöglichkeiten",
-        kraftstoffVerbrauch: "niedrig",
-        motorschaden: "niedrig",
-        pitstopZeit: 2.1,
-        teamPerformance: {
-            "mclaren": 0.91, "mercedes": 0.86, "ferrari": 0.81, "red-bull": 0.76,
-            "williams": 0.71, "racing-bulls": 0.66, "aston-martin": 0.64,
-            "sauber": 0.61, "haas": 0.56, "alpine": 0.51
-        }
-    },
-    "spanien": { 
-        name: "Circuit de Barcelona-Catalunya", 
-        runden: 66, 
-        reifenAbnutzung: "hoch", 
-        ueberholen: "mittel", 
-        typ: "standart",
-        beschreibung: "Hohe Reifenbelastung durch lange schnelle Kurven",
-        kraftstoffVerbrauch: "mittel",
-        motorschaden: "mittel",
-        pitstopZeit: 2.3,
-        teamPerformance: {
-            "mclaren": 0.94, "mercedes": 0.90, "ferrari": 0.86, "red-bull": 0.81,
-            "williams": 0.76, "racing-bulls": 0.71, "aston-martin": 0.69,
-            "sauber": 0.66, "haas": 0.61, "alpine": 0.56
-        }
-    },
-    "kanada": { 
-        name: "Circuit Gilles Villeneuve", 
-        runden: 70, 
-        reifenAbnutzung: "niedrig", 
-        ueberholen: "einfach", 
-        typ: "halbstadt",
-        beschreibung: "Niedrige Reifenabnutzung, gute Überholmöglichkeiten",
-        kraftstoffVerbrauch: "hoch",
-        motorschaden: "mittel",
-        pitstopZeit: 2.4,
-        teamPerformance: {
-            "mclaren": 0.92, "mercedes": 0.87, "ferrari": 0.82, "red-bull": 0.77,
-            "williams": 0.72, "racing-bulls": 0.67, "aston-martin": 0.65,
-            "sauber": 0.62, "haas": 0.57, "alpine": 0.52
-        }
-    },
-    "oesterreich": { 
-        name: "Red Bull Ring", 
-        runden: 71, 
-        reifenAbnutzung: "mittel", 
-        ueberholen: "einfach", 
-        typ: "standart",
-        beschreibung: "Kurze Strecke mit mehreren DRS-Zonen",
-        kraftstoffVerbrauch: "mittel",
-        motorschaden: "niedrig",
-        pitstopZeit: 2.2,
-        teamPerformance: {
-            "mclaren": 0.97, "mercedes": 0.92, "ferrari": 0.87, "red-bull": 0.82,
-            "williams": 0.77, "racing-bulls": 0.72, "aston-martin": 0.70,
-            "sauber": 0.67, "haas": 0.62, "alpine": 0.57
-        }
-    },
-    "grossbritannien": { 
-        name: "Silverstone Circuit", 
-        runden: 52, 
-        reifenAbnutzung: "hoch", 
-        ueberholen: "einfach", 
-        typ: "standart",
-        beschreibung: "Sehr hohe Reifenbelastung in den schnellen Kurven",
-        kraftstoffVerbrauch: "hoch",
-        motorschaden: "mittel",
-        pitstopZeit: 2.4,
-        teamPerformance: {
-            "mclaren": 0.96, "mercedes": 0.91, "ferrari": 0.86, "red-bull": 0.81,
-            "williams": 0.76, "racing-bulls": 0.71, "aston-martin": 0.69,
-            "sauber": 0.66, "haas": 0.61, "alpine": 0.56
-        }
-    },
-    "belgien": { 
-        name: "Circuit de Spa-Francorchamps", 
-        runden: 44, 
-        reifenAbnutzung: "mittel", 
-        ueberholen: "einfach", 
-        typ: "standart",
-        beschreibung: "Lange Strecke mit verschiedenen Kurventypen",
-        kraftstoffVerbrauch: "sehr hoch",
-        motorschaden: "hoch",
-        pitstopZeit: 2.5,
-        teamPerformance: {
-            "mclaren": 0.95, "mercedes": 0.90, "ferrari": 0.85, "red-bull": 0.80,
-            "williams": 0.75, "racing-bulls": 0.70, "aston-martin": 0.68,
-            "sauber": 0.65, "haas": 0.60, "alpine": 0.55
-        }
-    },
-    "ungarn": { 
-        name: "Hungaroring", 
-        runden: 70, 
-        reifenAbnutzung: "hoch", 
-        ueberholen: "schwierig", 
-        typ: "standart",
-        beschreibung: "Eng und kurvenreich mit wenigen Überholmöglichkeiten",
-        kraftstoffVerbrauch: "mittel",
-        motorschaden: "niedrig",
-        pitstopZeit: 2.3,
-        teamPerformance: {
-            "mclaren": 0.89, "mercedes": 0.84, "ferrari": 0.79, "red-bull": 0.74,
-            "williams": 0.69, "racing-bulls": 0.64, "aston-martin": 0.62,
-            "sauber": 0.59, "haas": 0.54, "alpine": 0.49
-        }
-    },
-    "niederlande": { 
-        name: "Circuit Zandvoort", 
-        runden: 72, 
-        reifenAbnutzung: "mittel", 
-        ueberholen: "schwierig", 
-        typ: "standart",
-        beschreibung: "Strecke mit hohen Banking-Kurven",
-        kraftstoffVerbrauch: "mittel",
-        motorschaden: "mittel",
-        pitstopZeit: 2.3,
-        teamPerformance: {
-            "mclaren": 0.88, "mercedes": 0.83, "ferrari": 0.78, "red-bull": 0.73,
-            "williams": 0.68, "racing-bulls": 0.63, "aston-martin": 0.61,
-            "sauber": 0.58, "haas": 0.53, "alpine": 0.48
-        }
-    },
-    "italien": { 
-        name: "Monza Circuit", 
-        runden: 53, 
-        reifenAbnutzung: "niedrig", 
-        ueberholen: "einfach", 
-        typ: "standart",
-        beschreibung: "Temple of Speed - niedrigste Reifenabnutzung",
-        kraftstoffVerbrauch: "sehr hoch",
-        motorschaden: "hoch",
-        pitstopZeit: 2.3,
-        teamPerformance: {
-            "mclaren": 0.92, "mercedes": 0.87, "ferrari": 0.82, "red-bull": 0.77,
-            "williams": 0.72, "racing-bulls": 0.67, "aston-martin": 0.65,
-            "sauber": 0.62, "haas": 0.57, "alpine": 0.52
-        }
-    },
-    "aserbaidschan": { 
-        name: "Baku City Circuit", 
-        runden: 51, 
-        reifenAbnutzung: "niedrig", 
-        ueberholen: "einfach", 
-        typ: "stadt",
-        beschreibung: "Lange Geraden und enge Straßen",
-        kraftstoffVerbrauch: "mittel",
-        motorschaden: "hoch",
-        pitstopZeit: 2.4,
-        teamPerformance: {
-            "mclaren": 0.87, "mercedes": 0.82, "ferrari": 0.77, "red-bull": 0.72,
-            "williams": 0.67, "racing-bulls": 0.62, "aston-martin": 0.60,
-            "sauber": 0.57, "haas": 0.52, "alpine": 0.47
-        }
-    },
-    "singapur": { 
-        name: "Marina Bay Street Circuit", 
-        runden: 61, 
-        reifenAbnutzung: "hoch", 
-        ueberholen: "schwierig", 
-        typ: "stadt",
-        beschreibung: "Hohe Luftfeuchtigkeit führt zu hoher Reifenabnutzung",
-        kraftstoffVerbrauch: "hoch",
-        motorschaden: "mittel",
-        pitstopZeit: 2.6,
-        teamPerformance: {
-            "mclaren": 0.90, "mercedes": 0.85, "ferrari": 0.80, "red-bull": 0.75,
-            "williams": 0.70, "racing-bulls": 0.65, "aston-martin": 0.63,
-            "sauber": 0.60, "haas": 0.55, "alpine": 0.50
-        }
-    },
-    "usa": { 
-        name: "Circuit of the Americas", 
-        runden: 56, 
-        reifenAbnutzung: "mittel", 
-        ueberholen: "mittel", 
-        typ: "standart",
-        beschreibung: "Abwechslungsreiche Strecke mit mittlerer Reifenabnutzung",
-        kraftstoffVerbrauch: "mittel",
-        motorschaden: "niedrig",
-        pitstopZeit: 2.4,
-        teamPerformance: {
-            "mclaren": 0.93, "mercedes": 0.88, "ferrari": 0.83, "red-bull": 0.78,
-            "williams": 0.73, "racing-bulls": 0.68, "aston-martin": 0.66,
-            "sauber": 0.63, "haas": 0.58, "alpine": 0.53
-        }
-    },
-    "mexiko": { 
-        name: "Autódromo Hermanos Rodríguez", 
-        runden: 71, 
-        reifenAbnutzung: "niedrig", 
-        ueberholen: "mittel", 
-        typ: "standart",
-        beschreibung: "Höhenlage reduziert Reifenabnutzung",
-        kraftstoffVerbrauch: "niedrig",
-        motorschaden: "niedrig",
-        pitstopZeit: 2.3,
-        teamPerformance: {
-            "mclaren": 0.96, "mercedes": 0.91, "ferrari": 0.86, "red-bull": 0.81,
-            "williams": 0.76, "racing-bulls": 0.71, "aston-martin": 0.69,
-            "sauber": 0.66, "haas": 0.61, "alpine": 0.56
-        }
-    },
-    "brasilien": { 
-        name: "Interlagos Circuit", 
-        runden: 71, 
-        reifenAbnutzung: "mittel", 
-        ueberholen: "einfach", 
-        typ: "standart",
-        beschreibung: "Ausgewogene Strecke mit guten Überholmöglichkeiten",
-        kraftstoffVerbrauch: "mittel",
-        motorschaden: "niedrig",
-        pitstopZeit: 2.3,
-        teamPerformance: {
-            "mclaren": 0.94, "mercedes": 0.89, "ferrari": 0.84, "red-bull": 0.79,
-            "williams": 0.74, "racing-bulls": 0.69, "aston-martin": 0.67,
-            "sauber": 0.64, "haas": 0.59, "alpine": 0.54
-        }
-    },
-    "las-vegas": { 
-        name: "Las Vegas Street Circuit", 
-        runden: 50, 
-        reifenAbnutzung: "niedrig", 
-        ueberholen: "mittel", 
-        typ: "stadt",
-        beschreibung: "Nachtrennen mit kühlen Temperaturen und niedriger Reifenabnutzung",
-        kraftstoffVerbrauch: "mittel",
-        motorschaden: "mittel",
-        pitstopZeit: 2.4,
-        teamPerformance: {
-            "mclaren": 0.92, "mercedes": 0.87, "ferrari": 0.82, "red-bull": 0.77,
-            "williams": 0.72, "racing-bulls": 0.67, "aston-martin": 0.65,
-            "sauber": 0.62, "haas": 0.57, "alpine": 0.52
-        }
-    },
-    "katar": { 
-        name: "Lusail International Circuit", 
-        runden: 57, 
-        reifenAbnutzung: "hoch", 
-        ueberholen: "einfach", 
-        typ: "standart",
-        beschreibung: "Hohe Temperaturen führen zu erhöhter Reifenabnutzung",
-        kraftstoffVerbrauch: "hoch",
-        motorschaden: "mittel",
-        pitstopZeit: 2.3,
-        teamPerformance: {
-            "mclaren": 0.95, "mercedes": 0.90, "ferrari": 0.85, "red-bull": 0.80,
-            "williams": 0.75, "racing-bulls": 0.70, "aston-martin": 0.68,
-            "sauber": 0.65, "haas": 0.60, "alpine": 0.55
-        }
-    },
-    "abu-dhabi": { 
-        name: "Yas Marina Circuit", 
-        runden: 58, 
-        reifenAbnutzung: "niedrig", 
-        ueberholen: "mittel", 
-        typ: "standart",
-        beschreibung: "Moderne Strecke mit niedriger Reifenabnutzung",
-        kraftstoffVerbrauch: "mittel",
-        motorschaden: "niedrig",
-        pitstopZeit: 2.2,
-        teamPerformance: {
-            "mclaren": 0.93, "mercedes": 0.88, "ferrari": 0.83, "red-bull": 0.78,
-            "williams": 0.73, "racing-bulls": 0.68, "aston-martin": 0.66,
-            "sauber": 0.63, "haas": 0.58, "alpine": 0.53
-        }
-    }
-};
+        const streckenDaten = {
+            "australien": { 
+                name: "Albert Park Circuit", 
+                runden: 58, 
+                reifenAbnutzung: "mittel", 
+                ueberholen: "mittel", 
+                typ: "halbstadt",
+                beschreibung: "Ausgewogene Strecke mit mittlerer Reifenabnutzung",
+                kraftstoffVerbrauch: "mittel",
+                motorschaden: "niedrig",
+                pitstopZeit: 2.2,
+                teamPerformance: {
+                    "mclaren": 0.95, "mercedes": 0.90, "ferrari": 0.85, "red-bull": 0.80,
+                    "williams": 0.75, "racing-bulls": 0.70, "aston-martin": 0.68,
+                    "sauber": 0.65, "haas": 0.60, "alpine": 0.55
+                }
+            },
+            "china": { 
+                name: "Shanghai International Circuit", 
+                runden: 56, 
+                reifenAbnutzung: "hoch", 
+                ueberholen: "einfach", 
+                typ: "standart",
+                beschreibung: "Hohe Reifenabnutzung durch abrasive Streckenoberfläche",
+                kraftstoffVerbrauch: "hoch",
+                motorschaden: "mittel",
+                pitstopZeit: 2.3,
+                teamPerformance: {
+                    "mclaren": 0.94, "mercedes": 0.89, "ferrari": 0.84, "red-bull": 0.79,
+                    "williams": 0.74, "racing-bulls": 0.69, "aston-martin": 0.67,
+                    "sauber": 0.64, "haas": 0.59, "alpine": 0.54
+                }
+            },
+            "japan": { 
+                name: "Suzuka International Racing Course", 
+                runden: 53, 
+                reifenAbnutzung: "hoch", 
+                ueberholen: "mittel", 
+                typ: "standart",
+                beschreibung: "Anspruchsvolle Strecke mit hoher Reifenbelastung",
+                kraftstoffVerbrauch: "mittel",
+                motorschaden: "mittel",
+                pitstopZeit: 2.3,
+                teamPerformance: {
+                    "mclaren": 0.93, "mercedes": 0.88, "ferrari": 0.83, "red-bull": 0.78,
+                    "williams": 0.73, "racing-bulls": 0.68, "aston-martin": 0.66,
+                    "sauber": 0.63, "haas": 0.58, "alpine": 0.53
+                }
+            },
+            "bahrain": { 
+                name: "Bahrain International Circuit", 
+                runden: 57, 
+                reifenAbnutzung: "mittel", 
+                ueberholen: "einfach", 
+                typ: "standart",
+                beschreibung: "Nachtrennen mit guten Überholmöglichkeiten",
+                kraftstoffVerbrauch: "mittel",
+                motorschaden: "niedrig",
+                pitstopZeit: 2.2,
+                teamPerformance: {
+                    "mclaren": 0.92, "mercedes": 0.87, "ferrari": 0.82, "red-bull": 0.77,
+                    "williams": 0.72, "racing-bulls": 0.67, "aston-martin": 0.65,
+                    "sauber": 0.62, "haas": 0.57, "alpine": 0.52
+                }
+            },
+            "saudi-arabien": { 
+                name: "Jeddah Corniche Circuit", 
+                runden: 50, 
+                reifenAbnutzung: "niedrig", 
+                ueberholen: "einfach", 
+                typ: "stadt",
+                beschreibung: "Schnellste Straßenstrecke der Welt",
+                kraftstoffVerbrauch: "hoch",
+                motorschaden: "hoch",
+                pitstopZeit: 2.4,
+                teamPerformance: {
+                    "mclaren": 0.91, "mercedes": 0.86, "ferrari": 0.81, "red-bull": 0.76,
+                    "williams": 0.71, "racing-bulls": 0.66, "aston-martin": 0.64,
+                    "sauber": 0.61, "haas": 0.56, "alpine": 0.51
+                }
+            },
+            "miami": { 
+                name: "Miami International Autodrome", 
+                runden: 57, 
+                reifenAbnutzung: "mittel", 
+                ueberholen: "mittel", 
+                typ: "stadt",
+                beschreibung: "Strecke mit mittlerer Abnutzung und einigen Überholmöglichkeiten",
+                kraftstoffVerbrauch: "mittel",
+                motorschaden: "niedrig",
+                pitstopZeit: 2.3,
+                teamPerformance: {
+                    "mclaren": 0.93, "mercedes": 0.88, "ferrari": 0.83, "red-bull": 0.78,
+                    "williams": 0.73, "racing-bulls": 0.68, "aston-martin": 0.66,
+                    "sauber": 0.63, "haas": 0.58, "alpine": 0.53
+                }
+            },
+            "imola": { 
+                name: "Imola Circuit", 
+                runden: 63, 
+                reifenAbnutzung: "hoch", 
+                ueberholen: "schwierig", 
+                typ: "standart",
+                beschreibung: "Traditionelle Strecke mit wenigen Überholmöglichkeiten",
+                kraftstoffVerbrauch: "mittel",
+                motorschaden: "mittel",
+                pitstopZeit: 2.3,
+                teamPerformance: {
+                    "mclaren": 0.90, "mercedes": 0.85, "ferrari": 0.80, "red-bull": 0.75,
+                    "williams": 0.70, "racing-bulls": 0.65, "aston-martin": 0.63,
+                    "sauber": 0.60, "haas": 0.55, "alpine": 0.50
+                }
+            },
+            "monaco": { 
+                name: "Circuit de Monaco", 
+                runden: 78, 
+                reifenAbnutzung: "niedrig", 
+                ueberholen: "sehr schwierig", 
+                typ: "stadt",
+                beschreibung: "Niedrigste Reifenabnutzung, aber kaum Überholmöglichkeiten",
+                kraftstoffVerbrauch: "niedrig",
+                motorschaden: "niedrig",
+                pitstopZeit: 2.1,
+                teamPerformance: {
+                    "mclaren": 0.91, "mercedes": 0.86, "ferrari": 0.81, "red-bull": 0.76,
+                    "williams": 0.71, "racing-bulls": 0.66, "aston-martin": 0.64,
+                    "sauber": 0.61, "haas": 0.56, "alpine": 0.51
+                }
+            },
+            "spanien": { 
+                name: "Circuit de Barcelona-Catalunya", 
+                runden: 66, 
+                reifenAbnutzung: "hoch", 
+                ueberholen: "mittel", 
+                typ: "standart",
+                beschreibung: "Hohe Reifenbelastung durch lange schnelle Kurven",
+                kraftstoffVerbrauch: "mittel",
+                motorschaden: "mittel",
+                pitstopZeit: 2.3,
+                teamPerformance: {
+                    "mclaren": 0.94, "mercedes": 0.90, "ferrari": 0.86, "red-bull": 0.81,
+                    "williams": 0.76, "racing-bulls": 0.71, "aston-martin": 0.69,
+                    "sauber": 0.66, "haas": 0.61, "alpine": 0.56
+                }
+            },
+            "kanada": { 
+                name: "Circuit Gilles Villeneuve", 
+                runden: 70, 
+                reifenAbnutzung: "niedrig", 
+                ueberholen: "einfach", 
+                typ: "halbstadt",
+                beschreibung: "Niedrige Reifenabnutzung, gute Überholmöglichkeiten",
+                kraftstoffVerbrauch: "hoch",
+                motorschaden: "mittel",
+                pitstopZeit: 2.4,
+                teamPerformance: {
+                    "mclaren": 0.92, "mercedes": 0.87, "ferrari": 0.82, "red-bull": 0.77,
+                    "williams": 0.72, "racing-bulls": 0.67, "aston-martin": 0.65,
+                    "sauber": 0.62, "haas": 0.57, "alpine": 0.52
+                }
+            },
+            "oesterreich": { 
+                name: "Red Bull Ring", 
+                runden: 71, 
+                reifenAbnutzung: "mittel", 
+                ueberholen: "einfach", 
+                typ: "standart",
+                beschreibung: "Kurze Strecke mit mehreren DRS-Zonen",
+                kraftstoffVerbrauch: "mittel",
+                motorschaden: "niedrig",
+                pitstopZeit: 2.2,
+                teamPerformance: {
+                    "mclaren": 0.97, "mercedes": 0.92, "ferrari": 0.87, "red-bull": 0.82,
+                    "williams": 0.77, "racing-bulls": 0.72, "aston-martin": 0.70,
+                    "sauber": 0.67, "haas": 0.62, "alpine": 0.57
+                }
+            },
+            "grossbritannien": { 
+                name: "Silverstone Circuit", 
+                runden: 52, 
+                reifenAbnutzung: "hoch", 
+                ueberholen: "einfach", 
+                typ: "standart",
+                beschreibung: "Sehr hohe Reifenbelastung in den schnellen Kurven",
+                kraftstoffVerbrauch: "hoch",
+                motorschaden: "mittel",
+                pitstopZeit: 2.4,
+                teamPerformance: {
+                    "mclaren": 0.96, "mercedes": 0.91, "ferrari": 0.86, "red-bull": 0.81,
+                    "williams": 0.76, "racing-bulls": 0.71, "aston-martin": 0.69,
+                    "sauber": 0.66, "haas": 0.61, "alpine": 0.56
+                }
+            },
+            "belgien": { 
+                name: "Circuit de Spa-Francorchamps", 
+                runden: 44, 
+                reifenAbnutzung: "mittel", 
+                ueberholen: "einfach", 
+                typ: "standart",
+                beschreibung: "Lange Strecke mit verschiedenen Kurventypen",
+                kraftstoffVerbrauch: "sehr hoch",
+                motorschaden: "hoch",
+                pitstopZeit: 2.5,
+                teamPerformance: {
+                    "mclaren": 0.95, "mercedes": 0.90, "ferrari": 0.85, "red-bull": 0.80,
+                    "williams": 0.75, "racing-bulls": 0.70, "aston-martin": 0.68,
+                    "sauber": 0.65, "haas": 0.60, "alpine": 0.55
+                }
+            },
+            "ungarn": { 
+                name: "Hungaroring", 
+                runden: 70, 
+                reifenAbnutzung: "hoch", 
+                ueberholen: "schwierig", 
+                typ: "standart",
+                beschreibung: "Eng und kurvenreich mit wenigen Überholmöglichkeiten",
+                kraftstoffVerbrauch: "mittel",
+                motorschaden: "niedrig",
+                pitstopZeit: 2.3,
+                teamPerformance: {
+                    "mclaren": 0.89, "mercedes": 0.84, "ferrari": 0.79, "red-bull": 0.74,
+                    "williams": 0.69, "racing-bulls": 0.64, "aston-martin": 0.62,
+                    "sauber": 0.59, "haas": 0.54, "alpine": 0.49
+                }
+            },
+            "niederlande": { 
+                name: "Circuit Zandvoort", 
+                runden: 72, 
+                reifenAbnutzung: "mittel", 
+                ueberholen: "schwierig", 
+                typ: "standart",
+                beschreibung: "Strecke mit hohen Banking-Kurven",
+                kraftstoffVerbrauch: "mittel",
+                motorschaden: "mittel",
+                pitstopZeit: 2.3,
+                teamPerformance: {
+                    "mclaren": 0.88, "mercedes": 0.83, "ferrari": 0.78, "red-bull": 0.73,
+                    "williams": 0.68, "racing-bulls": 0.63, "aston-martin": 0.61,
+                    "sauber": 0.58, "haas": 0.53, "alpine": 0.48
+                }
+            },
+            "italien": { 
+                name: "Monza Circuit", 
+                runden: 53, 
+                reifenAbnutzung: "niedrig", 
+                ueberholen: "einfach", 
+                typ: "standart",
+                beschreibung: "Temple of Speed - niedrigste Reifenabnutzung",
+                kraftstoffVerbrauch: "sehr hoch",
+                motorschaden: "hoch",
+                pitstopZeit: 2.3,
+                teamPerformance: {
+                    "mclaren": 0.92, "mercedes": 0.87, "ferrari": 0.82, "red-bull": 0.77,
+                    "williams": 0.72, "racing-bulls": 0.67, "aston-martin": 0.65,
+                    "sauber": 0.62, "haas": 0.57, "alpine": 0.52
+                }
+            },
+            "aserbaidschan": { 
+                name: "Baku City Circuit", 
+                runden: 51, 
+                reifenAbnutzung: "niedrig", 
+                ueberholen: "einfach", 
+                typ: "stadt",
+                beschreibung: "Lange Geraden und enge Straßen",
+                kraftstoffVerbrauch: "mittel",
+                motorschaden: "hoch",
+                pitstopZeit: 2.4,
+                teamPerformance: {
+                    "mclaren": 0.87, "mercedes": 0.82, "ferrari": 0.77, "red-bull": 0.72,
+                    "williams": 0.67, "racing-bulls": 0.62, "aston-martin": 0.60,
+                    "sauber": 0.57, "haas": 0.52, "alpine": 0.47
+                }
+            },
+            "singapur": { 
+                name: "Marina Bay Street Circuit", 
+                runden: 61, 
+                reifenAbnutzung: "hoch", 
+                ueberholen: "schwierig", 
+                typ: "stadt",
+                beschreibung: "Hohe Luftfeuchtigkeit führt zu hoher Reifenabnutzung",
+                kraftstoffVerbrauch: "hoch",
+                motorschaden: "mittel",
+                pitstopZeit: 2.6,
+                teamPerformance: {
+                    "mclaren": 0.90, "mercedes": 0.85, "ferrari": 0.80, "red-bull": 0.75,
+                    "williams": 0.70, "racing-bulls": 0.65, "aston-martin": 0.63,
+                    "sauber": 0.60, "haas": 0.55, "alpine": 0.50
+                }
+            },
+            "usa": { 
+                name: "Circuit of the Americas", 
+                runden: 56, 
+                reifenAbnutzung: "mittel", 
+                ueberholen: "mittel", 
+                typ: "standart",
+                beschreibung: "Abwechslungsreiche Strecke mit mittlerer Reifenabnutzung",
+                kraftstoffVerbrauch: "mittel",
+                motorschaden: "niedrig",
+                pitstopZeit: 2.4,
+                teamPerformance: {
+                    "mclaren": 0.93, "mercedes": 0.88, "ferrari": 0.83, "red-bull": 0.78,
+                    "williams": 0.73, "racing-bulls": 0.68, "aston-martin": 0.66,
+                    "sauber": 0.63, "haas": 0.58, "alpine": 0.53
+                }
+            },
+            "mexiko": { 
+                name: "Autódromo Hermanos Rodríguez", 
+                runden: 71, 
+                reifenAbnutzung: "niedrig", 
+                ueberholen: "mittel", 
+                typ: "standart",
+                beschreibung: "Höhenlage reduziert Reifenabnutzung",
+                kraftstoffVerbrauch: "niedrig",
+                motorschaden: "niedrig",
+                pitstopZeit: 2.3,
+                teamPerformance: {
+                    "mclaren": 0.96, "mercedes": 0.91, "ferrari": 0.86, "red-bull": 0.81,
+                    "williams": 0.76, "racing-bulls": 0.71, "aston-martin": 0.69,
+                    "sauber": 0.66, "haas": 0.61, "alpine": 0.56
+                }
+            },
+            "brasilien": { 
+                name: "Interlagos Circuit", 
+                runden: 71, 
+                reifenAbnutzung: "mittel", 
+                ueberholen: "einfach", 
+                typ: "standart",
+                beschreibung: "Ausgewogene Strecke mit guten Überholmöglichkeiten",
+                kraftstoffVerbrauch: "mittel",
+                motorschaden: "niedrig",
+                pitstopZeit: 2.3,
+                teamPerformance: {
+                    "mclaren": 0.94, "mercedes": 0.89, "ferrari": 0.84, "red-bull": 0.79,
+                    "williams": 0.74, "racing-bulls": 0.69, "aston-martin": 0.67,
+                    "sauber": 0.64, "haas": 0.59, "alpine": 0.54
+                }
+            },
+            "las-vegas": { 
+                name: "Las Vegas Street Circuit", 
+                runden: 50, 
+                reifenAbnutzung: "niedrig", 
+                ueberholen: "mittel", 
+                typ: "stadt",
+                beschreibung: "Nachtrennen mit kühlen Temperaturen und niedriger Reifenabnutzung",
+                kraftstoffVerbrauch: "mittel",
+                motorschaden: "mittel",
+                pitstopZeit: 2.4,
+                teamPerformance: {
+                    "mclaren": 0.92, "mercedes": 0.87, "ferrari": 0.82, "red-bull": 0.77,
+                    "williams": 0.72, "racing-bulls": 0.67, "aston-martin": 0.65,
+                    "sauber": 0.62, "haas": 0.57, "alpine": 0.52
+                }
+            },
+            "katar": { 
+                name: "Lusail International Circuit", 
+                runden: 57, 
+                reifenAbnutzung: "hoch", 
+                ueberholen: "einfach", 
+                typ: "standart",
+                beschreibung: "Hohe Temperaturen führen zu erhöhter Reifenabnutzung",
+                kraftstoffVerbrauch: "hoch",
+                motorschaden: "mittel",
+                pitstopZeit: 2.3,
+                teamPerformance: {
+                    "mclaren": 0.95, "mercedes": 0.90, "ferrari": 0.85, "red-bull": 0.80,
+                    "williams": 0.75, "racing-bulls": 0.70, "aston-martin": 0.68,
+                    "sauber": 0.65, "haas": 0.60, "alpine": 0.55
+                }
+            },
+            "abu-dhabi": { 
+                name: "Yas Marina Circuit", 
+                runden: 58, 
+                reifenAbnutzung: "niedrig", 
+                ueberholen: "mittel", 
+                typ: "standart",
+                beschreibung: "Moderne Strecke mit niedriger Reifenabnutzung",
+                kraftstoffVerbrauch: "mittel",
+                motorschaden: "niedrig",
+                pitstopZeit: 2.2,
+                teamPerformance: {
+                    "mclaren": 0.93, "mercedes": 0.88, "ferrari": 0.83, "red-bull": 0.78,
+                    "williams": 0.73, "racing-bulls": 0.68, "aston-martin": 0.66,
+                    "sauber": 0.63, "haas": 0.58, "alpine": 0.53
+                }
+            }
+        };
+
         // Datenbank mit allen Teams für 2025
         const teamDaten = {
             "mclaren": { name: "McLaren", reifenPerformance: 0.95, pace: 1.0, motoreffizienz: 1.05, realLifePace: 1.0 },
@@ -1938,6 +2019,16 @@ const streckenDaten = {
             });
         }
 
+        // Light Mode Toggle
+        const themeSwitch = document.getElementById('theme-switch');
+        themeSwitch.addEventListener('change', function() {
+            if (this.checked) {
+                document.body.classList.add('light-mode');
+            } else {
+                document.body.classList.remove('light-mode');
+            }
+        });
+
         // Funktion zum Befüllen der Dropdown-Menüs
         function ladeDaten() {
             const streckenSelect = document.getElementById('strecke');
@@ -1959,8 +2050,8 @@ const streckenDaten = {
             }
         }
 
-        // Funktion zur Berechnung der genauen Endplatzierung für Real-Life
-        function berechneExakteEndplatzierung(startposition, team, fahrer, strecke, strategie, wetter) {
+        // Verbesserte Funktion zur Berechnung der Endplatzierung
+        function berechneEndplatzierung(startposition, team, strategie, strecke, fahrstil, spielModus, fahrer = null) {
             // Basis-Position basierend auf Startposition
             let exactPosition = startposition;
             
@@ -1968,9 +2059,12 @@ const streckenDaten = {
             const teamPerformance = strecke.teamPerformance[team] || 0.7;
             exactPosition -= (teamPerformance - 0.5) * 10;
             
-            // Fahrer-Anpassung
-            exactPosition -= (fahrer.racecraft - 0.7) * 6;
-            exactPosition -= (fahrer.consistency - 0.7) * 4;
+            // Fahrer-Anpassung für Real-Life-Modus
+            if (spielModus === 'reallife' && fahrer) {
+                exactPosition -= (fahrer.racecraft - 0.7) * 6;
+                exactPosition -= (fahrer.consistency - 0.7) * 4;
+                exactPosition -= (fahrer.qualifying - 0.7) * 3; // Qualifying-Performance beeinflusst Startposition
+            }
             
             // Strategie-Anpassung
             if (strategie.stints.length === 3) { // 2-Stopp
@@ -1987,9 +2081,27 @@ const streckenDaten = {
             }
             
             // Wetter-Anpassung
+            const wetter = document.getElementById('wetter').value;
             if (wetter === "nass") {
-                exactPosition -= (fahrer.wetSkill - 0.7) * 3;
+                if (spielModus === 'reallife' && fahrer) {
+                    exactPosition -= (fahrer.wetSkill - 0.7) * 3;
+                } else {
+                    exactPosition -= 0.5; // Allgemeiner Vorteil für erfahrene Fahrer bei Regen
+                }
             }
+            
+            // Fahrstil-Anpassung (nicht in Real-Life-Modus)
+            if (spielModus !== 'reallife') {
+                if (fahrstil === "aggressiv") {
+                    exactPosition -= 2;
+                } else if (fahrstil === "konservativ") {
+                    exactPosition += 1;
+                }
+            }
+            
+            // Zufällige Faktoren (Unfälle, technische Probleme)
+            const zufallsFaktor = (Math.random() - 0.5) * 2; // -1 bis +1
+            exactPosition += zufallsFaktor;
             
             // Sicherstellen, dass die Position im gültigen Bereich liegt
             exactPosition = Math.max(1, Math.min(20, Math.round(exactPosition)));
@@ -2020,7 +2132,7 @@ const streckenDaten = {
             // Konfidenz berechnen
             let confidence = 75;
             if (teamPerformance > 0.8) confidence += 10;
-            if (fahrer.consistency > 0.85) confidence += 5;
+            if (spielModus === 'reallife' && fahrer && fahrer.consistency > 0.85) confidence += 5;
             if (strategie.stints.length === 2) confidence += 5;
             
             confidence = Math.min(95, confidence);
@@ -2117,61 +2229,6 @@ const streckenDaten = {
             }
             
             return highlights;
-        }
-
-        // Funktion zur Berechnung der Endplatz-Vorhersage
-        function berechneEndplatzierung(startposition, team, strategie, strecke, fahrstil, spielModus, fahrer = null) {
-            // Für Real-Life-Modus verwenden wir die spezielle Funktion
-            if (spielModus === 'reallife' && fahrer) {
-                return berechneExakteEndplatzierung(startposition, team, fahrer, strecke, strategie, document.getElementById('wetter').value);
-            }
-            
-            // Alte Logik für andere Modi (vereinfacht)
-            let basePosition = startposition;
-            
-            if (spielModus === 'reallife') {
-                basePosition -= (1 - team.realLifePace) * 10;
-            } else {
-                basePosition -= (1 - team.pace) * 10;
-            }
-            
-            if (strategie.stints.length === 3) {
-                basePosition -= 2;
-            } else if (strategie.stints[0].reifen === "Soft") {
-                basePosition -= 1;
-            }
-            
-            if (strecke.ueberholen === "einfach") {
-                basePosition -= 1;
-            } else if (strecke.ueberholen === "sehr schwierig") {
-                basePosition += 1;
-            }
-            
-            if (fahrstil === "aggressiv") {
-                basePosition -= 2;
-            } else if (fahrstil === "konservativ") {
-                basePosition += 1;
-            }
-            
-            basePosition = Math.max(1, Math.min(20, Math.round(basePosition)));
-            
-            const minPosition = Math.max(1, basePosition - 2);
-            const maxPosition = Math.min(20, basePosition + 2);
-            
-            let podiumChance = Math.max(0, Math.min(30, (5 - basePosition) * 10));
-            let pointsChance = Math.max(0, Math.min(70, (11 - basePosition) * 10));
-            let outChance = 100 - podiumChance - pointsChance;
-            
-            return {
-                range: `P${minPosition} - P${maxPosition}`,
-                podium: podiumChance,
-                points: pointsChance,
-                out: outChance,
-                exact: basePosition,
-                confidence: 70,
-                confidenceText: "Mittlere Wahrscheinlichkeit (70%)",
-                teamPerformance: 0.7
-            };
         }
 
         // Funktion zur Berechnung der Überholvorhersage
@@ -2823,7 +2880,7 @@ const streckenDaten = {
             const vorteilDiv = document.getElementById('vorteil-info');
             const vorteilText = document.getElementById('vorteil-text');
             
-            // Position Prediction anzeigen
+            // Position Prediction anzeigen (jetzt in allen Modi)
             const positionDiv = document.getElementById('position-prediction');
             const exactPosition = document.getElementById('exact-position');
             const positionConfidence = document.getElementById('position-confidence');
@@ -2833,12 +2890,11 @@ const streckenDaten = {
             
             if (spielModus === 'reallife') {
                 exactPosition.textContent = `P${positionPrediction.exact}`;
-                positionConfidence.textContent = positionPrediction.confidenceText;
             } else {
-                exactPosition.textContent = positionPrediction.range;
-                positionConfidence.textContent = `Mittlere Wahrscheinlichkeit (${positionPrediction.confidence}%)`;
+                exactPosition.textContent = `P${positionPrediction.exact}`;
             }
             
+            positionConfidence.textContent = positionPrediction.confidenceText;
             posPodium.innerHTML = `P1-P3<br><small>${positionPrediction.podium}%</small>`;
             posPoints.innerHTML = `P4-P10<br><small>${positionPrediction.points}%</small>`;
             posOut.innerHTML = `P11-P20<br><small>${positionPrediction.out}%</small>`;
