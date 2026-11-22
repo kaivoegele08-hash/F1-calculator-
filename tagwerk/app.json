@@ -45,7 +45,15 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-router",
+      [
+        "expo-router",
+        {
+          "asyncRoutes": {
+            "web": false,
+            "default": "development"
+          }
+        }
+      ],
       "expo-sqlite",
       "expo-font",
       "expo-audio",
