@@ -16,7 +16,6 @@ import {
 } from './types';
 
 /** Any synchronous drizzle SQLite database (expo-sqlite or better-sqlite3). */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type SyncDb = BaseSQLiteDatabase<'sync', any, any>;
 
 export function runMigrations(db: SyncDb): void {

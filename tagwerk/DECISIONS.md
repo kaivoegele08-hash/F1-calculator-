@@ -12,3 +12,14 @@
 - Zeitzonen-/Jetlag-Logik: Beim Wechsel der Session-Zeitzone verschiebt sich die Phase um die UTC-Differenz und holt dann max. 60 Min./Tag auf.
 - Eigene Zeitzonen-Offset-Berechnung via `Intl` statt `date-fns-tz.getTimezoneOffset`, weil Letzteres rund um Zeitumstellungen um eine Stunde abwich.
 - Engine bekommt `needMinutes` von außen (gecachter Schätzwert), die teure 90-Tage-Schätzung läuft nur nachts bzw. nach Datenänderungen.
+- Daten: `SqliteStore` ist gegen eine synchrone Drizzle-Datenbank geschrieben und läuft sowohl mit `expo-sqlite` (App) als auch mit `better-sqlite3` (Tests). Web nutzt einen `MemoryStore` mit localStorage, weil `expo-sqlite` im Web noch experimentell ist.
+- Migrationen: eigener versionierter Runner (`migration_log`) mit SQL-Statements statt drizzle-kit-Bundle, damit er ohne Metro-Sonderkonfiguration läuft.
+- Wissensartikel liegen als TypeScript-Strings (`src/content/library.ts`) statt `.md`-Dateien, damit Metro sie ohne Zusatz-Transformer bündelt. Format ist ein kleines Markdown-Subset.
+- Zeit-Picker: eigene Stepper (Stunde/Minute) statt nativer Picker, damit sie überall (Web, iOS, Android) gleich funktionieren und groß genug sind.
+- Reanimated wird in Jest durch einen schlanken Mock ersetzt, d3 und lucide werden auf ihre CommonJS-Builds gemappt.
+- Kontrast: Hell-Modus-Farben wurden nach einem Kontrasttest (≥ 4,5:1) abgedunkelt, `onAccent`/`onBad` regeln die Schriftfarbe auf Akzent-Flächen.
+- Widgets (7.7) bewusst nicht gebaut: WidgetKit braucht ein natives Swift-Target (z. B. `expo-apple-targets`) und eine App Group, Android-Widgets `react-native-android-widget` samt Headless-Task. Beides lässt sich ohne Gerät/Xcode nicht prüfen. Stattdessen erzeugt `buildWidgetSnapshot()` das JSON für beide Seiten. To-do.
+- Sanfter Wecker: Benachrichtigung statt echter Alarm (iOS-Einschränkung), im UI offen kommuniziert.
+- Summary-Cache (`daily_summary`) wird beim Öffnen von „Heute“ geschrieben und bei jeder Datenänderung geleert. Die Berechnung selbst ist so schnell, dass sie nicht davon abhängt.
+- Dev-Menü: Die Demo-Szenarien sind als normaler „Demo-Modus“ unter Einstellungen → Daten verfügbar (nicht nur in `__DEV__`), weil sie auch Nutzern das Ausprobieren erlauben.
+- Erinnerungen: Plan über 7 Tage (max. 60 Benachrichtigungen, iOS-Limit 64), jeder Folgetag wird unter der Annahme einer vollen Nacht zur empfohlenen Zeit berechnet; zwischen Schlafenszeit und Aufwachen wird nichts geplant.

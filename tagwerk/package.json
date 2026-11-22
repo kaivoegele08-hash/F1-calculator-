@@ -27,6 +27,7 @@
     "expo-sharing": "~58.0.23",
     "expo-sqlite": "~58.0.18",
     "expo-status-bar": "~58.0.5",
+    "expo-system-ui": "~58.0.7",
     "expo-task-manager": "~58.0.14",
     "lucide-react-native": "^1.77.0",
     "react": "19.3.0",
@@ -65,8 +66,8 @@
   },
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
@@ -92,6 +93,18 @@
     "testMatch": [
       "**/__tests__/**/*.test.ts",
       "**/__tests__/**/*.test.tsx"
-    ]
+    ],
+    "setupFiles": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(.pnpm|react-native|@react-native|@react-native-community|expo|@expo|@expo-google-fonts|react-navigation|@react-navigation|d3-.*|internmap|lucide-react-native))"
+    ],
+    "moduleNameMapper": {
+      "^(d3-[a-z-]+)$": "<rootDir>/node_modules/$1/dist/$1.min.js",
+      "^internmap$": "<rootDir>/node_modules/internmap/dist/internmap.min.js",
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "^lucide-react-native$": "<rootDir>/node_modules/lucide-react-native/dist/cjs/lucide-react-native.js"
+    }
   }
 }

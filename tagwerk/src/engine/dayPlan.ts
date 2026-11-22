@@ -201,3 +201,12 @@ export function computeTomorrowPlan(input: DayPlanInput, today?: DayPlan): DayPl
 }
 
 export const DEFAULT_WAKE_OFFSET_H = DEFAULT_WAKE_BEFORE_START_H;
+
+/** Which phase the day is in at time `t` (used for scrubbing and labels). */
+export function phaseAt(plan: DayPlan, t: number): DayPhase {
+  for (const [kind, ph] of PHASE_KINDS) {
+    const w = plan.windows.find((x) => x.kind === kind);
+    if (w && t >= w.start && t < w.end) return ph;
+  }
+  return 'neutral';
+}

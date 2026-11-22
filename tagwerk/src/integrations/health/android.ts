@@ -2,7 +2,6 @@ import { Platform } from 'react-native';
 import type { HealthConnectSleepRecord } from './convert';
 import type { HealthProvider, PermissionResult, RawSleepSample } from './types';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 function loadHC(): any | null {
   if (Platform.OS !== 'android') return null;
   try {

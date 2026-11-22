@@ -1,7 +1,6 @@
 import { Platform } from 'react-native';
 import type { HealthProvider, PermissionResult, RawSleepSample, RawStepSample } from './types';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 function loadKit(): any | null {
   if (Platform.OS !== 'ios') return null;
   try {

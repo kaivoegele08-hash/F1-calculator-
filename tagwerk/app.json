@@ -8,22 +8,73 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "splash": { "image": "./assets/splash-icon.png", "resizeMode": "contain", "backgroundColor": "#0B0E1A" },
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0B0E1A"
+    },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "app.tagwerk.sleep",
       "infoPlist": {
         "NSHealthShareUsageDescription": "Tagwerk liest deine Schlafdaten, um Schlafbedarf, Schlafschuld und deinen Rhythmus zu schätzen. Die Daten bleiben auf deinem Gerät.",
-        "NSCalendarsUsageDescription": "Tagwerk zeigt deine Termine neben deinen Energiefenstern an."
+        "NSCalendarsUsageDescription": "Tagwerk zeigt deine Termine neben deinen Energiefenstern an.",
+        "NSCalendarsFullAccessUsageDescription": "Tagwerk zeigt deine Termine neben deinen Energiefenstern an.",
+        "UIBackgroundModes": [
+          "fetch",
+          "processing"
+        ]
       }
     },
     "android": {
       "package": "app.tagwerk.sleep",
-      "permissions": ["android.permission.health.READ_SLEEP", "android.permission.READ_CALENDAR", "android.permission.WRITE_CALENDAR"],
-      "adaptiveIcon": { "backgroundColor": "#0B0E1A", "foregroundImage": "./assets/android-icon-foreground.png" }
+      "permissions": [
+        "android.permission.health.READ_SLEEP",
+        "android.permission.READ_CALENDAR",
+        "android.permission.WRITE_CALENDAR",
+        "android.permission.POST_NOTIFICATIONS"
+      ],
+      "adaptiveIcon": {
+        "backgroundColor": "#0B0E1A",
+        "foregroundImage": "./assets/android-icon-foreground.png"
+      }
     },
-    "web": { "bundler": "metro", "output": "single", "favicon": "./assets/favicon.png" },
-    "plugins": ["expo-router", "expo-sqlite", "expo-font", "expo-audio", "expo-sharing", "expo-background-task", "expo-notifications"],
-    "experiments": { "typedRoutes": false }
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-sqlite",
+      "expo-font",
+      "expo-audio",
+      "expo-sharing",
+      "expo-background-task",
+      "expo-notifications",
+      "expo-dev-client",
+      [
+        "react-native-health",
+        {
+          "healthSharePermission": "Tagwerk liest deine Schlafzeiten, um Schlafbedarf, Schlafschuld und deinen Rhythmus zu schätzen. Die Daten bleiben auf deinem Gerät.",
+          "healthUpdatePermission": "Tagwerk schreibt keine Gesundheitsdaten.",
+          "isClinicalDataEnabled": false
+        }
+      ],
+      "react-native-health-connect",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 26,
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35
+          }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false
+    }
   }
 }

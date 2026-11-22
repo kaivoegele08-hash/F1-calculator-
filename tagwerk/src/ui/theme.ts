@@ -20,6 +20,7 @@ export interface Colors {
   dip: string;
   melatonin: string;
   onAccent: string;
+  onBad: string;
 }
 
 export const darkColors: Colors = {
@@ -39,6 +40,7 @@ export const darkColors: Colors = {
   dip: '#5B7CFA',
   melatonin: '#9B7CFF',
   onAccent: '#1A1300',
+  onBad: '#2A0000',
 };
 
 export const lightColors: Colors = {
@@ -48,16 +50,17 @@ export const lightColors: Colors = {
   border: '#D5DAEB',
   text: '#141A2E',
   textMuted: '#525B78',
-  accent: '#B36B00',
+  accent: '#955700',
   accent2: '#4A5BD6',
-  good: '#0E8A63',
-  warn: '#A8620A',
-  bad: '#C93A3A',
+  good: '#0A7552',
+  warn: '#8F5208',
+  bad: '#B02E2E',
   groggy: '#6B7599',
   peak: '#D98A00',
   dip: '#3E5FE0',
-  melatonin: '#7656E0',
+  melatonin: '#6444D0',
   onAccent: '#FFFFFF',
+  onBad: '#FFFFFF',
 };
 
 export const spacing = (n: number) => n * 4;

@@ -5,10 +5,10 @@ Checklist nach Phasen (Spezifikation: Abschnitt 14).
 ## Phase 1 – Fundament
 - [x] Expo-Projekt (SDK 58), TypeScript strict
 - [x] ESLint, Prettier, Jest (`npm test` = tsc + jest)
-- [ ] expo-router mit 5 Tabs, Theme, Fonts
-- [ ] SQLite + Drizzle + erste Migration
-- [ ] Demo-Datengenerator + 5 Szenarien
-- [ ] README-Grundgerüst
+- [x] expo-router mit 5 Tabs, Theme, Fonts
+- [x] SQLite + Drizzle + erste Migration
+- [x] Demo-Datengenerator + 5 Szenarien
+- [x] README-Grundgerüst
 
 ## Phase 2 – Engine
 - [x] Konstanten, Typen, Zeit-Hilfen (DST-sicher)
@@ -21,23 +21,23 @@ Checklist nach Phasen (Spezifikation: Abschnitt 14).
 - [x] Tests (> 90 % Zeilenabdeckung), Benchmark
 
 ## Phase 3 – Kern-UI
-- [ ] Home: EnergyCurve (Scrubbing), DebtGauge, Tipps, letzte Nacht
-- [ ] Schlaf-Tab mit Charts
-- [ ] Tagesplan-Timeline
-- [ ] Night-Detail inkl. Bearbeiten
+- [x] Home: EnergyCurve (Scrubbing), DebtGauge, Tipps, letzte Nacht
+- [x] Schlaf-Tab mit Charts
+- [x] Tagesplan-Timeline
+- [x] Night-Detail inkl. Bearbeiten
 
 ## Phase 4 – Echte Daten & Onboarding
-- [ ] HealthProvider (iOS/Android/Mock), 90-Tage-Import, Sync
-- [ ] Manuelle Eingabe
-- [ ] Onboarding mit Ergebnis-Reveal
+- [x] HealthProvider (iOS/Android/Mock), 90-Tage-Import, Sync
+- [x] Manuelle Eingabe
+- [x] Onboarding mit Ergebnis-Reveal
 
 ## Phase 5 – Gewohnheiten, Benachrichtigungen, Kalender, Wissen
-- [ ] Habits + Logs + Heatmap
-- [ ] Lokale Benachrichtigungen + Neuplanung
-- [ ] Kalender-Overlay
-- [ ] Wissensbibliothek, Tools, Einstellungen, Export/Import
+- [x] Habits + Logs + Heatmap
+- [x] Lokale Benachrichtigungen + Neuplanung
+- [x] Kalender-Overlay
+- [x] Wissensbibliothek, Tools, Einstellungen, Export/Import
 
 ## Phase 6 – Feinschliff
-- [ ] Light Mode, i18n EN, Barrierefreiheit
-- [ ] Sanfter Wecker, Widgets (To-do dokumentiert)
-- [ ] Abschlusstest gegen Akzeptanzkriterien
+- [x] Light Mode, i18n EN, Barrierefreiheit
+- [x] Sanfter Wecker, Widgets (To-do dokumentiert)
+- [x] Abschlusstest gegen Akzeptanzkriterien
