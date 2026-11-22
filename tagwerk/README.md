@@ -13,7 +13,7 @@ Die Spezifikation, nach der die App gebaut wurde, steht im Prompt zu diesem Proj
 
 ```bash
 cd tagwerk
-npm install
+npm install            # .npmrc setzt legacy-peer-deps (einige Expo-Peer-Ranges sind enger als die React-19-Versionen)
 npm test                 # tsc --noEmit + Jest (Engine, Daten, Services, Komponenten)
 npm run lint             # ESLint ohne Warnungen
 npx expo start --web     # Web-Vorschau mit Demo-Daten
